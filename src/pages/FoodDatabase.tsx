@@ -74,106 +74,119 @@ export default function FoodDatabase() {
       </Card>
 
       {/* Results */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
         {filteredFoods.map((food) => (
-          <Card key={food.id} className="bg-card border-border shadow-card hover-lift group cursor-pointer">
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <CardTitle className="text-lg font-semibold text-foreground group-hover:text-primary transition-smooth">
-                    {food.name}
-                  </CardTitle>
-                  <p className="text-sm text-muted-foreground mt-1 capitalize">{food.category}</p>
-                </div>
-                <div className="w-16 h-16 bg-healing rounded-lg flex items-center justify-center text-white text-2xl shadow-primary">
+          <Card key={food.id} className="bg-card border-border shadow-card hover-lift group cursor-pointer h-full flex flex-col overflow-hidden">
+            {/* Food Header with Image */}
+            <div className="relative">
+              <div className="h-32 sm:h-40 bg-healing bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border-b border-border">
+                <div className="text-4xl sm:text-5xl filter drop-shadow-lg">
                   {food.emoji}
                 </div>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Ayurvedic Properties */}
-              <div>
-                <h4 className="font-medium text-foreground mb-2">Ayurvedic Properties</h4>
-                <div className="space-y-2">
-                  <div>
-                    <span className="text-sm text-muted-foreground">Taste: </span>
-                    <div className="flex gap-1 mt-1 flex-wrap">
-                      {food.ayurvedicProperties.taste.map((taste, index) => (
-                        <Badge key={index} variant="outline" className="text-xs">
+              <div className="absolute top-2 right-2">
+                <Badge className="text-xs capitalize bg-card text-card-foreground border border-border">
+                  {food.category}
+                </Badge>
+              </div>
+            </div>
+
+            <CardContent className="p-4 flex-1 flex flex-col space-y-3">
+              {/* Food Name */}
+              <div className="text-center mb-2">
+                <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-smooth">
+                  {food.name}
+                </h3>
+              </div>
+
+              {/* Ayurvedic Properties - Compact */}
+              <div className="bg-subtle-gradient p-3 rounded-lg border border-border">
+                <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                  🕉️ Ayurvedic Properties
+                </h4>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Rasa:</span>
+                    <div className="flex gap-1 flex-wrap">
+                      {food.ayurvedicProperties.taste.slice(0, 2).map((taste, index) => (
+                        <Badge key={index} variant="outline" className="text-xs px-1.5 py-0.5">
                           {taste}
                         </Badge>
                       ))}
                     </div>
                   </div>
-                  <div>
-                    <span className="text-sm text-muted-foreground">Effect: </span>
-                    <Badge className={`text-xs ${getDoshaColor(food.ayurvedicProperties.effect)}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Effect:</span>
+                    <Badge className={`text-xs px-2 py-0.5 ${getDoshaColor(food.ayurvedicProperties.effect)}`}>
                       {food.ayurvedicProperties.effect}
                     </Badge>
                   </div>
-                  <div>
-                    <span className="text-sm text-muted-foreground">Potency: </span>
-                    <span className="text-sm font-medium text-foreground">{food.ayurvedicProperties.potency}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Virya:</span>
+                    <span className="text-xs font-medium text-foreground">{food.ayurvedicProperties.potency}</span>
                   </div>
                 </div>
               </div>
 
-              {/* Modern Nutrition */}
-              <div>
-                <h4 className="font-medium text-foreground mb-2">Nutrition (per 100g)</h4>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Calories: </span>
+              {/* Modern Nutrition - Compact Grid */}
+              <div className="bg-card border border-border p-3 rounded-lg">
+                <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                  🧬 Nutrition (per 100g)
+                </h4>
+                <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Cal:</span>
                     <span className="font-medium text-foreground">{food.nutrition.calories}</span>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">Protein: </span>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Protein:</span>
                     <span className="font-medium text-foreground">{food.nutrition.protein}g</span>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">Carbs: </span>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Carbs:</span>
                     <span className="font-medium text-foreground">{food.nutrition.carbs}g</span>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">Fiber: </span>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Fiber:</span>
                     <span className="font-medium text-foreground">{food.nutrition.fiber}g</span>
                   </div>
                 </div>
               </div>
 
-              {/* Key Nutrients */}
-              <div>
-                <h4 className="font-medium text-foreground mb-2">Key Nutrients</h4>
-                <div className="flex gap-1 flex-wrap">
-                  {food.nutrition.keyNutrients.slice(0, 3).map((nutrient, index) => (
-                    <Badge key={index} className="text-xs bg-primary text-primary-foreground">
-                      {nutrient}
-                    </Badge>
-                  ))}
+              {/* Key Nutrients & Benefits - Combined */}
+              <div className="space-y-2">
+                <div>
+                  <h4 className="text-xs font-medium text-muted-foreground mb-1">Key Nutrients</h4>
+                  <div className="flex gap-1 flex-wrap">
+                    {food.nutrition.keyNutrients.slice(0, 3).map((nutrient, index) => (
+                      <Badge key={index} className="text-xs bg-primary/10 text-primary border-primary/20 px-1.5 py-0.5">
+                        {nutrient}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* Health Benefits */}
-              <div>
-                <h4 className="font-medium text-foreground mb-2">Health Benefits</h4>
-                <div className="flex gap-1 flex-wrap">
-                  {food.healthBenefits.slice(0, 2).map((benefit, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
-                      {benefit}
-                    </Badge>
-                  ))}
-                  {food.healthBenefits.length > 2 && (
-                    <Badge variant="outline" className="text-xs">
-                      +{food.healthBenefits.length - 2} more
-                    </Badge>
-                  )}
+                <div>
+                  <h4 className="text-xs font-medium text-muted-foreground mb-1">Health Benefits</h4>
+                  <div className="flex gap-1 flex-wrap">
+                    {food.healthBenefits.slice(0, 2).map((benefit, index) => (
+                      <Badge key={index} variant="outline" className="text-xs px-1.5 py-0.5">
+                        {benefit.length > 20 ? benefit.substring(0, 20) + '...' : benefit}
+                      </Badge>
+                    ))}
+                    {food.healthBenefits.length > 2 && (
+                      <Badge variant="outline" className="text-xs px-1.5 py-0.5">
+                        +{food.healthBenefits.length - 2}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </div>
 
               {/* Action Button */}
               <Button 
                 size="sm" 
-                className="w-full bg-healing text-white hover:bg-primary-dark shadow-primary"
+                className="w-full mt-auto bg-healing text-white hover:bg-primary-dark shadow-primary transition-smooth"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add to Diet Plan

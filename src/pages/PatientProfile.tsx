@@ -175,6 +175,7 @@ export default function PatientProfile() {
                 pitta={patient.doshaBalance.pitta}
                 kapha={patient.doshaBalance.kapha}
                 size="lg"
+                interactive={true}
               />
               <div className="text-center">
                 <p className="text-sm text-muted-foreground">Current Balance</p>
@@ -306,9 +307,84 @@ export default function PatientProfile() {
         </TabsContent>
 
         <TabsContent value="logs" className="space-y-6">
+          {/* Weekly Analytics Dashboard */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+            <Card className="bg-card border-border shadow-card hover-lift">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Water Intake</p>
+                    <p className="text-2xl font-bold text-foreground">6.2L</p>
+                    <p className="text-xs text-success">+15% this week</p>
+                  </div>
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-primary"></div>
+                  </div>
+                </div>
+                <div className="mt-3 h-2 bg-muted rounded-full">
+                  <div className="h-2 bg-primary rounded-full" style={{ width: '75%' }}></div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card border-border shadow-card hover-lift">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Sleep Quality</p>
+                    <p className="text-2xl font-bold text-foreground">7.2h</p>
+                    <p className="text-xs text-warning">-5% this week</p>
+                  </div>
+                  <Moon className="w-8 h-8 text-kapha" />
+                </div>
+                <div className="mt-3 h-2 bg-muted rounded-full">
+                  <div className="h-2 bg-kapha rounded-full" style={{ width: '80%' }}></div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card border-border shadow-card hover-lift">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Energy Levels</p>
+                    <p className="text-2xl font-bold text-foreground">8.1/10</p>
+                    <p className="text-xs text-success">+12% this week</p>
+                  </div>
+                  <Activity className="w-8 h-8 text-pitta" />
+                </div>
+                <div className="mt-3 h-2 bg-muted rounded-full">
+                  <div className="h-2 bg-pitta rounded-full" style={{ width: '81%' }}></div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card border-border shadow-card hover-lift">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Diet Compliance</p>
+                    <p className="text-2xl font-bold text-foreground">85%</p>
+                    <p className="text-xs text-success">+8% this week</p>
+                  </div>
+                  <div className="w-8 h-8 bg-success/20 rounded-full flex items-center justify-center">
+                    <div className="w-4 h-4 bg-success rounded-full"></div>
+                  </div>
+                </div>
+                <div className="mt-3 h-2 bg-muted rounded-full">
+                  <div className="h-2 bg-success rounded-full" style={{ width: '85%' }}></div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Detailed Logs */}
           <Card className="bg-card border-border shadow-card">
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-lg font-semibold text-foreground">{t.logs}</CardTitle>
+              <div>
+                <CardTitle className="text-lg font-semibold text-foreground">{t.logs}</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">Natural language entries analyzed by AI</p>
+              </div>
               <Badge className="bg-success text-success-foreground">
                 {t.logsSubmitted}
               </Badge>
@@ -316,19 +392,51 @@ export default function PatientProfile() {
             <CardContent className="space-y-4">
               {patient.recentLogs && patient.recentLogs.length > 0 ? (
                 patient.recentLogs.map((log, index) => (
-                  <div key={index} className="p-4 bg-subtle-gradient rounded-lg border border-border">
+                  <div key={index} className="p-4 bg-subtle-gradient rounded-lg border border-border hover-lift transition-all">
                     <div className="flex items-center justify-between mb-3">
                       <span className="font-medium text-foreground">{log.date}</span>
                       <div className="flex gap-2">
-                        <Badge variant="outline" className="text-xs">Mood: {log.mood}</Badge>
-                        <Badge variant="outline" className="text-xs">Energy: {log.energy}</Badge>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${
+                            log.mood === 'Good' ? 'border-success text-success' :
+                            log.mood === 'Average' ? 'border-warning text-warning' :
+                            'border-muted text-muted-foreground'
+                          }`}
+                        >
+                          Mood: {log.mood}
+                        </Badge>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${
+                            log.energy === 'High' ? 'border-pitta text-pitta' :
+                            log.energy === 'Medium' ? 'border-vata text-vata' :
+                            'border-kapha text-kapha'
+                          }`}
+                        >
+                          Energy: {log.energy}
+                        </Badge>
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">{log.entry}</p>
+                    <p className="text-sm text-muted-foreground mb-3">{log.entry}</p>
+                    
+                    {/* AI Insights from log */}
+                    <div className="mt-3 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                      <p className="text-xs font-medium text-primary mb-1">AI Analysis:</p>
+                      <p className="text-xs text-muted-foreground">
+                        {index === 0 && "Good hydration levels noted. Consider adding warming spices to balance Vata."}
+                        {index === 1 && "Sleep quality improving. Morning energy indicates balanced Agni (digestive fire)."}
+                        {index === 2 && "Low energy may indicate Kapha imbalance. Recommend light, warm foods."}
+                      </p>
+                    </div>
                   </div>
                 ))
               ) : (
-                <p className="text-muted-foreground text-center py-8">No recent logs available</p>
+                <div className="text-center py-12">
+                  <Activity className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground mb-2">No recent logs available</p>
+                  <p className="text-sm text-muted-foreground">Patient logs are submitted via mobile app in natural language</p>
+                </div>
               )}
             </CardContent>
           </Card>

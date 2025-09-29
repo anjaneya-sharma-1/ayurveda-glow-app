@@ -73,6 +73,14 @@
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bouncy: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Vedic-inspired patterns and textures */
+    --pattern-mandala: radial-gradient(circle at center, transparent 20%, hsl(var(--primary)) 20.5%, hsl(var(--primary)) 21%, transparent 21.5%);
+    --pattern-lotus: conic-gradient(from 0deg at center, hsl(var(--primary)) 0deg, transparent 60deg, hsl(var(--primary)) 120deg, transparent 180deg, hsl(var(--primary)) 240deg, transparent 300deg);
+    
+    /* Sacred geometry inspired spacing */
+    --golden-ratio: 1.618;
+    --sacred-spacing: calc(1rem * var(--golden-ratio));
 
     --radius: 0.75rem;
 
@@ -212,12 +220,83 @@
     @apply transition-smooth hover:shadow-primary;
   }
 
+  /* Vedic-inspired elements */
+  .vedic-pattern {
+    background-image: var(--pattern-mandala);
+    background-size: 20px 20px;
+  }
+  
+  .lotus-gradient {
+    background: var(--pattern-lotus);
+  }
+  
+  .sacred-spacing {
+    margin: var(--sacred-spacing);
+  }
+  
+  /* Enhanced dosha wheel animations */
+  @keyframes draw-vata {
+    0% {
+      stroke-dasharray: 0 1000;
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes draw-pitta {
+    0% {
+      stroke-dasharray: 0 1000;
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes draw-kapha {
+    0% {
+      stroke-dasharray: 0 1000;
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
   /* Dosha wheel styling */
   .dosha-wheel {
-    @apply relative w-24 h-24 rounded-full overflow-hidden shadow-card;
+    @apply relative rounded-full overflow-visible;
+    filter: drop-shadow(0 4px 12px hsl(var(--primary) / 0.15));
   }
   
   .dosha-segment {
-    @apply absolute inset-0 transition-all duration-500;
+    @apply absolute inset-0 transition-all duration-700;
+  }
+  
+  /* Responsive card layouts */
+  .card-responsive {
+    @apply w-full h-full min-h-[280px] flex flex-col;
+  }
+  
+  /* Cultural elements */
+  .sanskrit-text {
+    @apply font-medium tracking-wider;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+  }
+  
+  .healing-card {
+    @apply bg-gradient-to-br from-card via-card to-primary/5 border border-primary/10;
+    box-shadow: 0 4px 20px -4px hsl(var(--primary) / 0.15), 0 0 40px -20px hsl(var(--primary) / 0.1);
   }
 }
