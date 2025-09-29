@@ -155,8 +155,10 @@ export function DoshaWheel({ vata, pitta, kapha, size = "md", className = "", in
       {/* Center content */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-xs font-medium text-muted-foreground tracking-wide">प्रकृति</div>
-          <div className={`text-sm font-bold text-${interpretation.color} transition-colors duration-500`}>
+          {size !== "sm" && (
+            <div className="text-xs font-medium text-muted-foreground tracking-wide">प्रकृति</div>
+          )}
+          <div className={`${size === "sm" ? "text-xs" : "text-sm"} font-bold text-${interpretation.color} transition-colors duration-500`}>
             {interpretation.name.toUpperCase()}
           </div>
           {size === "lg" && (
@@ -186,30 +188,32 @@ export function DoshaWheel({ vata, pitta, kapha, size = "md", className = "", in
         </div>
       )}
       
-      {/* Enhanced Legend */}
-      <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex gap-6">
-        <div className="flex flex-col items-center gap-1 group cursor-pointer"
-             onMouseEnter={() => interactive && setHoveredSegment('vata')}
-             onMouseLeave={() => interactive && setHoveredSegment(null)}>
-          <div className="w-3 h-3 rounded-full bg-vata shadow-sm group-hover:scale-110 transition-transform"></div>
-          <span className="text-xs text-muted-foreground font-medium">V</span>
-          <span className="text-xs text-vata font-semibold">{vata}%</span>
+      {/* Enhanced Legend - Only show for lg size */}
+      {size === "lg" && (
+        <div className="absolute -bottom-14 left-1/2 transform -translate-x-1/2 flex gap-8">
+          <div className="flex flex-col items-center gap-2 group cursor-pointer"
+               onMouseEnter={() => interactive && setHoveredSegment('vata')}
+               onMouseLeave={() => interactive && setHoveredSegment(null)}>
+            <div className="w-4 h-4 rounded-full bg-vata shadow-sm group-hover:scale-110 transition-transform"></div>
+            <span className="text-xs text-muted-foreground font-medium">V</span>
+            <span className="text-xs text-vata font-semibold">{vata}%</span>
+          </div>
+          <div className="flex flex-col items-center gap-2 group cursor-pointer"
+               onMouseEnter={() => interactive && setHoveredSegment('pitta')}
+               onMouseLeave={() => interactive && setHoveredSegment(null)}>
+            <div className="w-4 h-4 rounded-full bg-pitta shadow-sm group-hover:scale-110 transition-transform"></div>
+            <span className="text-xs text-muted-foreground font-medium">P</span>
+            <span className="text-xs text-pitta font-semibold">{pitta}%</span>
+          </div>
+          <div className="flex flex-col items-center gap-2 group cursor-pointer"
+               onMouseEnter={() => interactive && setHoveredSegment('kapha')}
+               onMouseLeave={() => interactive && setHoveredSegment(null)}>
+            <div className="w-4 h-4 rounded-full bg-kapha shadow-sm group-hover:scale-110 transition-transform"></div>
+            <span className="text-xs text-muted-foreground font-medium">K</span>
+            <span className="text-xs text-kapha font-semibold">{kapha}%</span>
+          </div>
         </div>
-        <div className="flex flex-col items-center gap-1 group cursor-pointer"
-             onMouseEnter={() => interactive && setHoveredSegment('pitta')}
-             onMouseLeave={() => interactive && setHoveredSegment(null)}>
-          <div className="w-3 h-3 rounded-full bg-pitta shadow-sm group-hover:scale-110 transition-transform"></div>
-          <span className="text-xs text-muted-foreground font-medium">P</span>
-          <span className="text-xs text-pitta font-semibold">{pitta}%</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 group cursor-pointer"
-             onMouseEnter={() => interactive && setHoveredSegment('kapha')}
-             onMouseLeave={() => interactive && setHoveredSegment(null)}>
-          <div className="w-3 h-3 rounded-full bg-kapha shadow-sm group-hover:scale-110 transition-transform"></div>
-          <span className="text-xs text-muted-foreground font-medium">K</span>
-          <span className="text-xs text-kapha font-semibold">{kapha}%</span>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

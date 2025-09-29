@@ -259,5 +259,265 @@ export const foodDatabase: FoodItem[] = [
     },
     healthBenefits: ["Grounding", "Energy", "Eye Health", "Immunity"],
     description: "Naturally sweet root vegetable that grounds Vata and provides sustained energy"
+  },
+  {
+    id: "13",
+    name: "Rice",
+    category: "grains",
+    emoji: "🍚",
+    ayurvedicProperties: {
+      taste: ["Sweet"],
+      effect: "Kapha",
+      potency: "Cooling"
+    },
+    nutrition: {
+      calories: 130,
+      protein: 2.7,
+      carbs: 28,
+      fiber: 0.4,
+      keyNutrients: ["Carbohydrates", "B Vitamins"]
+    },
+    healthBenefits: ["Energy", "Easy Digestion", "Grounding"],
+    description: "Staple grain that provides sustained energy and is easy to digest"
+  },
+  {
+    id: "14",
+    name: "Dal (Lentils)",
+    category: "legumes",
+    emoji: "🫘",
+    ayurvedicProperties: {
+      taste: ["Sweet", "Astringent"],
+      effect: "Vata",
+      potency: "Heating"
+    },
+    nutrition: {
+      calories: 116,
+      protein: 9,
+      carbs: 20,
+      fiber: 8,
+      keyNutrients: ["Protein", "Iron", "Folate"]
+    },
+    healthBenefits: ["Protein Source", "Heart Health", "Blood Sugar Control"],
+    description: "Protein-rich legumes essential in Ayurvedic nutrition"
+  },
+  {
+    id: "15",
+    name: "Chapati",
+    category: "grains",
+    emoji: "🫓",
+    ayurvedicProperties: {
+      taste: ["Sweet"],
+      effect: "Kapha",
+      potency: "Neutral"
+    },
+    nutrition: {
+      calories: 104,
+      protein: 3.1,
+      carbs: 18,
+      fiber: 3.1,
+      keyNutrients: ["Fiber", "B Vitamins", "Iron"]
+    },
+    healthBenefits: ["Sustained Energy", "Digestive Health"],
+    description: "Whole wheat flatbread that provides steady energy"
+  },
+  {
+    id: "16",
+    name: "Green Tea",
+    category: "beverages",
+    emoji: "🍵",
+    ayurvedicProperties: {
+      taste: ["Bitter", "Astringent"],
+      effect: "Pitta",
+      potency: "Cooling"
+    },
+    nutrition: {
+      calories: 2,
+      protein: 0,
+      carbs: 0,
+      fiber: 0,
+      keyNutrients: ["Antioxidants", "Catechins"]
+    },
+    healthBenefits: ["Antioxidant", "Metabolism Boost", "Mental Clarity"],
+    description: "Antioxidant-rich beverage that promotes mental clarity"
+  },
+  {
+    id: "17",
+    name: "Warm Water with Lemon",
+    category: "beverages",
+    emoji: "🍋",
+    ayurvedicProperties: {
+      taste: ["Sour"],
+      effect: "Pitta",
+      potency: "Heating"
+    },
+    nutrition: {
+      calories: 7,
+      protein: 0.1,
+      carbs: 2.3,
+      fiber: 0.5,
+      keyNutrients: ["Vitamin C", "Citric Acid"]
+    },
+    healthBenefits: ["Detoxification", "Digestive Fire", "Vitamin C"],
+    description: "Morning detox drink that kindles digestive fire"
+  },
+  {
+    id: "18",
+    name: "Oatmeal",
+    category: "grains",
+    emoji: "🥣",
+    ayurvedicProperties: {
+      taste: ["Sweet"],
+      effect: "Kapha",
+      potency: "Heating"
+    },
+    nutrition: {
+      calories: 71,
+      protein: 2.5,
+      carbs: 12,
+      fiber: 1.7,
+      keyNutrients: ["Beta-glucan", "B Vitamins", "Iron"]
+    },
+    healthBenefits: ["Heart Health", "Sustained Energy", "Cholesterol Control"],
+    description: "Nutritious breakfast grain that provides sustained energy"
+  },
+  {
+    id: "19",
+    name: "Herbal Tea",
+    category: "beverages",
+    emoji: "🌿",
+    ayurvedicProperties: {
+      taste: ["Bitter", "Pungent"],
+      effect: "Vata",
+      potency: "Heating"
+    },
+    nutrition: {
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fiber: 0,
+      keyNutrients: ["Antioxidants", "Essential Oils"]
+    },
+    healthBenefits: ["Digestive Aid", "Calming", "Immunity"],
+    description: "Soothing herbal blend that aids digestion and relaxation"
+  },
+  {
+    id: "20",
+    name: "Warm Milk with Turmeric",
+    category: "beverages",
+    emoji: "🥛",
+    ayurvedicProperties: {
+      taste: ["Sweet", "Bitter"],
+      effect: "Vata",
+      potency: "Heating"
+    },
+    nutrition: {
+      calories: 83,
+      protein: 3.4,
+      carbs: 5,
+      fiber: 0,
+      keyNutrients: ["Calcium", "Curcumin", "Protein"]
+    },
+    healthBenefits: ["Anti-inflammatory", "Sleep Aid", "Bone Health"],
+    description: "Golden milk that promotes restful sleep and reduces inflammation"
+  },
+  {
+    id: "21",
+    name: "Vegetable Soup",
+    category: "soups",
+    emoji: "🍲",
+    ayurvedicProperties: {
+      taste: ["Sweet", "Bitter"],
+      effect: "Vata",
+      potency: "Heating"
+    },
+    nutrition: {
+      calories: 67,
+      protein: 2.1,
+      carbs: 13,
+      fiber: 3.3,
+      keyNutrients: ["Vitamins", "Minerals", "Fiber"]
+    },
+    healthBenefits: ["Hydration", "Easy Digestion", "Nutrient Dense"],
+    description: "Nourishing soup that is easy to digest and hydrating"
+  },
+  {
+    id: "22",
+    name: "Khichdi",
+    category: "grains",
+    emoji: "🍛",
+    ayurvedicProperties: {
+      taste: ["Sweet"],
+      effect: "Vata",
+      potency: "Heating"
+    },
+    nutrition: {
+      calories: 120,
+      protein: 4.5,
+      carbs: 22,
+      fiber: 2.5,
+      keyNutrients: ["Complete Protein", "B Vitamins", "Iron"]
+    },
+    healthBenefits: ["Complete Nutrition", "Easy Digestion", "Healing"],
+    description: "Perfect healing food combining rice and lentils for complete nutrition"
+  },
+  {
+    id: "23",
+    name: "Buttermilk",
+    category: "dairy",
+    emoji: "🥛",
+    ayurvedicProperties: {
+      taste: ["Sour", "Astringent"],
+      effect: "Pitta",
+      potency: "Cooling"
+    },
+    nutrition: {
+      calories: 40,
+      protein: 3.3,
+      carbs: 4.8,
+      fiber: 0,
+      keyNutrients: ["Probiotics", "Calcium", "B12"]
+    },
+    healthBenefits: ["Digestive Health", "Cooling", "Probiotic"],
+    description: "Cooling fermented drink that aids digestion and provides probiotics"
+  },
+  {
+    id: "24",
+    name: "Idli",
+    category: "grains",
+    emoji: "⚪",
+    ayurvedicProperties: {
+      taste: ["Sweet"],
+      effect: "Kapha",
+      potency: "Cooling"
+    },
+    nutrition: {
+      calories: 58,
+      protein: 2,
+      carbs: 12,
+      fiber: 0.8,
+      keyNutrients: ["Probiotics", "B Vitamins"]
+    },
+    healthBenefits: ["Easy Digestion", "Probiotic", "Light"],
+    description: "Steamed fermented rice cakes that are light and easy to digest"
+  },
+  {
+    id: "25",
+    name: "Quinoa",
+    category: "grains",
+    emoji: "🌾",
+    ayurvedicProperties: {
+      taste: ["Sweet", "Bitter"],
+      effect: "Vata",
+      potency: "Heating"
+    },
+    nutrition: {
+      calories: 120,
+      protein: 4.4,
+      carbs: 22,
+      fiber: 2.8,
+      keyNutrients: ["Complete Protein", "Iron", "Magnesium"]
+    },
+    healthBenefits: ["Complete Protein", "Gluten-Free", "Mineral Rich"],
+    description: "Complete protein grain that's gluten-free and nutrient dense"
   }
 ];

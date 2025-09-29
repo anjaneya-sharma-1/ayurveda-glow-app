@@ -18,12 +18,20 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DoshaWheel } from "@/components/dashboard/DoshaWheel";
+import { DietPlanEditor } from "@/components/diet/DietPlanEditor";
 import { patientsData } from "@/data/patientsData";
+import { priyaSharmaDietPlan, WeeklyDietPlan } from "@/data/priyaSharmaDietPlan";
+import { pdfExportService } from "@/services/pdfExportService";
 
 export default function PatientProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [language, setLanguage] = useState<"en" | "hi">("en");
+  const [isExportingPDF, setIsExportingPDF] = useState(false);
+  const [dietPlan, setDietPlan] = useState<WeeklyDietPlan>(
+    // Use Priya Sharma's pre-made diet plan if it's her profile, otherwise empty plan
+    id === "1" ? priyaSharmaDietPlan : {}
+  );
   
   const patient = patientsData.find(p => p.id === id);
   
@@ -66,6 +74,42 @@ export default function PatientProfile() {
       editProfile: "प्रोफाइल संपादित करें",
       logsSubmitted: "आज लॉग जमा किए गए",
       notSynced: "मरीज़ ने आज पहनने योग्य डिवाइस सिंक नहीं किया है"
+    }
+  };
+
+  const handleSaveDietPlan = (newPlan: WeeklyDietPlan) => {
+    setDietPlan(newPlan);
+    // Here you would typically save to backend
+    console.log("Diet plan saved for patient:", patient?.name, newPlan);
+  };
+
+  const handleExportPDF = async () => {
+    if (!patient) return;
+    
+    setIsExportingPDF(true);
+    try {
+      // Convert patient data to the format expected by PDF service
+      const patientData = {
+        id: patient.id,
+        name: patient.name,
+        age: patient.age,
+        gender: patient.gender,
+        prakriti: patient.prakriti,
+        lastConsultation: patient.lastConsultation,
+        doshaBalance: patient.doshaBalance,
+        height: patient.height,
+        weight: patient.weight,
+        bmi: patient.bmi,
+        riskFlags: patient.riskFlags,
+        wearableData: patient.wearableData
+      };
+
+      await pdfExportService.exportPatientReport(patientData, dietPlan, language);
+    } catch (error) {
+      console.error("PDF export failed:", error);
+      // You could add a toast notification here
+    } finally {
+      setIsExportingPDF(false);
     }
   };
 
@@ -118,70 +162,104 @@ export default function PatientProfile() {
             <Edit3 className="w-4 h-4 mr-2" />
             {t.editProfile}
           </Button>
-          <Button className="bg-healing text-white hover:bg-primary-dark shadow-primary">
+          <Button 
+            onClick={handleExportPDF}
+            disabled={isExportingPDF}
+            className="bg-healing text-white hover:bg-primary-dark shadow-primary"
+          >
             <Download className="w-4 h-4 mr-2" />
-            {t.exportPDF}
+            {isExportingPDF ? (language === 'en' ? 'Generating PDF...' : 'PDF बनाई जा रही है...') : t.exportPDF}
           </Button>
         </div>
       </div>
 
       {/* Patient Header */}
       <Card className="bg-card border-border shadow-card">
-        <CardContent className="p-6">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-16 h-16 bg-healing rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-primary">
-                  {patient.name.split(" ").map(n => n[0]).join("")}
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-foreground">{patient.name}</h2>
-                  <div className="flex items-center gap-4 text-muted-foreground mt-1">
-                    <span>{patient.age} years</span>
-                    <span>•</span>
-                    <span>{patient.gender}</span>
-                    <span>•</span>
-                    <span className="text-primary font-medium">Prakriti: {patient.prakriti}</span>
-                  </div>
-                  {patient.location && (
-                    <p className="text-sm text-muted-foreground mt-1">{patient.location}</p>
-                  )}
-                </div>
+        <CardContent className="p-8">
+          {/* Top Section: Avatar, Name & Status */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-6">
+              <div className="w-20 h-20 bg-healing rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                {patient.name.split(" ").map(n => n[0]).join("")}
               </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div>
-                  <span className="text-muted-foreground">Height:</span>
-                  <p className="font-medium text-foreground">{patient.height} cm</p>
+              <div>
+                <h2 className="text-3xl font-bold text-foreground mb-2">{patient.name}</h2>
+                <div className="flex items-center gap-6 text-lg text-muted-foreground">
+                  <span>{patient.age} years</span>
+                  <span>•</span>
+                  <span>{patient.gender}</span>
+                  <span>•</span>
+                  <span className="text-primary font-semibold">Prakriti: {patient.prakriti}</span>
                 </div>
-                <div>
-                  <span className="text-muted-foreground">Weight:</span>
-                  <p className="font-medium text-foreground">{patient.weight} kg</p>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">BMI:</span>
-                  <p className="font-medium text-foreground">{patient.bmi}</p>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Last Visit:</span>
-                  <p className="font-medium text-foreground">{patient.lastConsultation}</p>
-                </div>
+                {patient.location && (
+                  <p className="text-muted-foreground mt-2">{patient.location}</p>
+                )}
               </div>
             </div>
             
-            <div className="flex flex-col items-center gap-4">
-              <DoshaWheel 
-                vata={patient.doshaBalance.vata}
-                pitta={patient.doshaBalance.pitta}
-                kapha={patient.doshaBalance.kapha}
-                size="lg"
-                interactive={true}
-              />
+            {/* Status Badge */}
+            <Badge className="px-4 py-2 text-sm bg-warning text-warning-foreground">
+              Needs Attention
+            </Badge>
+          </div>
+
+          {/* Bottom Section: Stats & Dosha */}
+          <div className="flex items-center justify-between">
+            {/* Patient Stats */}
+            <div className="flex gap-12">
               <div className="text-center">
-                <p className="text-sm text-muted-foreground">Current Balance</p>
-                <p className="text-xs text-muted-foreground">
-                  V:{patient.doshaBalance.vata}% P:{patient.doshaBalance.pitta}% K:{patient.doshaBalance.kapha}%
-                </p>
+                <p className="text-sm text-muted-foreground mb-1">Height:</p>
+                <p className="text-xl font-bold text-foreground">{patient.height} cm</p>
+              </div>
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground mb-1">Weight:</p>
+                <p className="text-xl font-bold text-foreground">{patient.weight} kg</p>
+              </div>
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground mb-1">BMI:</p>
+                <p className="text-xl font-bold text-foreground">{patient.bmi}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground mb-1">Last Visit:</p>
+                <p className="text-xl font-bold text-foreground">{patient.lastConsultation}</p>
+              </div>
+            </div>
+            
+            {/* Dosha Wheel & Info */}
+            <div className="flex items-center gap-8">
+              {/* Dosha Percentages */}
+              <div className="space-y-4">
+                <div className="text-center mb-4">
+                  <p className="text-sm font-semibold text-muted-foreground mb-2">Current Balance</p>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full" style={{backgroundColor: 'hsl(var(--vata-color))'}}></div>
+                    <span className="text-sm font-medium w-12" style={{color: 'hsl(var(--vata-color))'}}>Vata</span>
+                    <span className="text-lg font-bold text-foreground">{patient.doshaBalance.vata}%</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full" style={{backgroundColor: 'hsl(var(--pitta-color))'}}></div>
+                    <span className="text-sm font-medium w-12" style={{color: 'hsl(var(--pitta-color))'}}>Pitta</span>
+                    <span className="text-lg font-bold text-foreground">{patient.doshaBalance.pitta}%</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full" style={{backgroundColor: 'hsl(var(--kapha-color))'}}></div>
+                    <span className="text-sm font-medium w-12" style={{color: 'hsl(var(--kapha-color))'}}>Kapha</span>
+                    <span className="text-lg font-bold text-foreground">{patient.doshaBalance.kapha}%</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Clean Dosha Wheel */}
+              <div>
+                <DoshaWheel 
+                  vata={patient.doshaBalance.vata}
+                  pitta={patient.doshaBalance.pitta}
+                  kapha={patient.doshaBalance.kapha}
+                  size="md"
+                  interactive={false}
+                />
               </div>
             </div>
           </div>
@@ -471,23 +549,22 @@ export default function PatientProfile() {
         </TabsContent>
 
         <TabsContent value="diet-plan" className="space-y-6">
-          <Card className="bg-card border-border shadow-card">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-lg font-semibold text-foreground">{t.dietPlan}</CardTitle>
-              <Button className="bg-healing text-white hover:bg-primary-dark shadow-primary">
-                <Plus className="w-4 h-4 mr-2" />
-                {t.generateDietPlan}
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <p className="text-muted-foreground mb-4">No diet plan generated yet</p>
-                <p className="text-sm text-muted-foreground">
-                  Click "Generate AI Diet Plan" to create a personalized Ayurvedic diet plan based on the patient's dosha balance and health profile.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <DietPlanEditor
+            patientId={patient.id}
+            patientName={patient.name}
+            patientData={{
+              age: patient.age,
+              gender: patient.gender,
+              prakriti: patient.prakriti,
+              doshaBalance: patient.doshaBalance,
+              height: patient.height,
+              weight: patient.weight,
+              bmi: patient.bmi,
+              healthConditions: patient.riskFlags?.map(risk => risk.condition) || []
+            }}
+            initialPlan={dietPlan}
+            onSave={handleSaveDietPlan}
+          />
         </TabsContent>
       </Tabs>
     </div>
