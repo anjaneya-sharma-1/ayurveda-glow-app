@@ -30,22 +30,22 @@ export function PatientCard({
   doshaBalance,
   status,
   location,
-  onClick
+  onClick,
 }: PatientCardProps) {
   const statusColors = {
     active: "bg-success text-success-foreground",
     inactive: "bg-muted text-muted-foreground",
-    attention: "bg-warning text-warning-foreground"
+    attention: "bg-warning text-warning-foreground",
   };
 
   const statusLabels = {
     active: "Active",
     inactive: "Inactive",
-    attention: "Needs Attention"
+    attention: "Needs Attention",
   };
 
   return (
-    <Card 
+    <Card
       className="hover-lift cursor-pointer bg-card border-border transition-smooth group"
       onClick={onClick}
     >
@@ -53,20 +53,24 @@ export function PatientCard({
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-smooth">
+              <h3 className="patient-name group-hover:text-primary transition-smooth">
                 {name}
               </h3>
               <Badge className={`text-xs ${statusColors[status]}`}>
                 {statusLabels[status]}
               </Badge>
             </div>
-            <div className="space-y-1 text-sm text-muted-foreground">
+            <div className="space-y-1 healthcare-text">
               <div className="flex items-center gap-2">
-                <span>{age} years, {gender}</span>
+                <span>
+                  {age} years, {gender}
+                </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-medium text-primary">Prakriti:</span>
-                <span>{prakriti}</span>
+                <span className="form-label text-primary">
+                  प्रकृति (Prakriti):
+                </span>
+                <span className="ayurvedic-term">{prakriti}</span>
               </div>
               {location && (
                 <div className="flex items-center gap-1">
@@ -76,9 +80,9 @@ export function PatientCard({
               )}
             </div>
           </div>
-          
+
           <div className="flex flex-col items-center gap-2">
-            <DoshaWheel 
+            <DoshaWheel
               vata={doshaBalance.vata}
               pitta={doshaBalance.pitta}
               kapha={doshaBalance.kapha}
@@ -86,13 +90,13 @@ export function PatientCard({
             />
           </div>
         </div>
-        
+
         <div className="flex items-center justify-between pt-4 border-t border-border">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 form-description">
             <Calendar className="w-4 h-4" />
             <span>Last visit: {lastConsultation}</span>
           </div>
-          <div className="flex items-center gap-1 text-sm text-primary">
+          <div className="flex items-center gap-1 link-text">
             <Activity className="w-4 h-4" />
             <span>View Details</span>
           </div>

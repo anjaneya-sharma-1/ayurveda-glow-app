@@ -81,6 +81,9 @@
     /* Sacred geometry inspired spacing */
     --golden-ratio: 1.618;
     --sacred-spacing: calc(1rem * var(--golden-ratio));
+    
+    /* Cultural typography */
+    --font-size-sanskrit: 1.125rem;
 
     --radius: 0.75rem;
 
@@ -146,7 +149,79 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground font-body antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  /* Typography Hierarchy */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-foreground;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  h1 {
+    @apply text-display-lg font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply text-display-md font-bold tracking-tight;
+  }
+
+  h3 {
+    @apply text-display-sm font-semibold tracking-tight;
+  }
+
+  h4 {
+    @apply text-heading-lg font-semibold;
+  }
+
+  h5 {
+    @apply text-heading-md font-medium;
+  }
+
+  h6 {
+    @apply text-heading-sm font-medium;
+  }
+
+  p {
+    @apply text-body-md leading-relaxed;
+  }
+
+  /* Professional text variants */
+  .text-display {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  .text-heading {
+    @apply font-display font-semibold;
+  }
+
+  .text-body {
+    @apply font-body leading-relaxed;
+  }
+
+  .text-caption {
+    @apply text-caption font-medium text-muted-foreground;
+  }
+
+  .text-label {
+    @apply text-body-sm font-medium;
+  }
+
+  /* Enhanced readability for healthcare content */
+  .healthcare-text {
+    @apply font-body text-body-md leading-relaxed tracking-wide;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Medical/Clinical text styling */
+  .clinical-data {
+    @apply font-mono text-body-sm tabular-nums;
+  }
+
+  /* Brand/Logo typography */
+  .brand-text {
+    @apply font-display font-bold tracking-tight;
   }
 }
 
@@ -283,6 +358,78 @@
   .dosha-segment {
     @apply absolute inset-0 transition-all duration-700;
   }
+
+  /* Chatbot animations */
+  @keyframes slide-in-from-right {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(var(--primary) / 0.4), 0 0 40px hsl(var(--primary) / 0.2), 0 8px 32px hsl(var(--primary) / 0.15);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 35px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--primary) / 0.3), 0 8px 32px hsl(var(--primary) / 0.25);
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes gentle-bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-4px);
+    }
+    60% {
+      transform: translateY(-2px);
+    }
+  }
+
+  .animate-in {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+  }
+
+  .slide-in-from-right-5 {
+    animation-name: slide-in-from-right;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-gentle-bounce {
+    animation: gentle-bounce 2s ease-in-out infinite;
+  }
+
+  /* Doctor Avatar animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+  }
+  
+  @keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    75% { transform: rotate(-10deg); }
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-wave {
+    animation: wave 2s ease-in-out infinite;
+  }
   
   /* Responsive card layouts */
   .card-responsive {
@@ -291,8 +438,94 @@
   
   /* Cultural elements */
   .sanskrit-text {
-    @apply font-medium tracking-wider;
-    font-family: 'Noto Sans Devanagari', sans-serif;
+    @apply font-devanagari font-medium tracking-ayurvedic;
+    font-size: var(--font-size-sanskrit);
+    line-height: 1.8;
+  }
+  
+  .ayurvedic-term {
+    @apply font-devanagari font-medium text-primary italic tracking-wide;
+  }
+  
+  .dosha-label {
+    @apply font-display font-semibold tracking-wide uppercase text-sm;
+  }
+
+  /* Professional healthcare typography */
+  .patient-name {
+    @apply font-display font-semibold text-heading-md text-foreground;
+  }
+  
+  .diagnosis-text {
+    @apply font-body font-medium text-body-md text-foreground;
+  }
+  
+  .metric-value {
+    @apply font-display font-bold text-2xl tabular-nums text-primary;
+  }
+  
+  .metric-label {
+    @apply font-body font-medium text-body-sm text-muted-foreground uppercase tracking-wide;
+  }
+  
+  .card-title {
+    @apply font-display font-semibold text-heading-md text-foreground;
+  }
+  
+  .card-subtitle {
+    @apply font-body font-medium text-body-sm text-muted-foreground;
+  }
+  
+  .section-header {
+    @apply font-display font-bold text-heading-lg text-foreground tracking-tight;
+  }
+  
+  .subsection-header {
+    @apply font-display font-semibold text-heading-md text-foreground;
+  }
+  
+  /* Interactive text elements */
+  .link-text {
+    @apply font-body font-medium text-primary hover:text-primary-dark transition-colors;
+  }
+  
+  .button-text {
+    @apply font-body font-semibold tracking-wide;
+  }
+  
+  /* Status and alert typography */
+  .success-text {
+    @apply font-body font-medium text-success;
+  }
+  
+  .warning-text {
+    @apply font-body font-medium text-warning;
+  }
+  
+  .error-text {
+    @apply font-body font-medium text-destructive;
+  }
+  
+  /* Form typography */
+  .form-label {
+    @apply font-body font-semibold text-body-sm text-foreground;
+  }
+  
+  .form-description {
+    @apply font-body text-body-sm text-muted-foreground leading-relaxed;
+  }
+  
+  .form-error {
+    @apply font-body font-medium text-caption text-destructive;
+  }
+  
+  /* Navigation typography */
+  .nav-item {
+    @apply font-body font-medium text-body-md;
+  }
+  
+  .nav-section {
+    @apply font-body font-semibold text-body-sm text-muted-foreground uppercase tracking-wider;
   }
   
   .healing-card {

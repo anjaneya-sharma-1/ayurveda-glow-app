@@ -1,12 +1,12 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { 
-  LayoutDashboard, 
-  Users, 
-  Search, 
-  MessageSquare, 
+import {
+  LayoutDashboard,
+  Users,
+  Search,
+  MessageSquare,
   TrendingUp,
   Leaf,
-  Stethoscope
+  Stethoscope,
 } from "lucide-react";
 import {
   Sidebar,
@@ -60,8 +60,8 @@ export function AppSidebar() {
   };
 
   const getNavClass = (path: string) => {
-    return isActive(path) 
-      ? "bg-primary text-primary-foreground font-medium shadow-primary" 
+    return isActive(path)
+      ? "bg-primary text-primary-foreground font-medium shadow-primary"
       : "text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-smooth";
   };
 
@@ -73,15 +73,15 @@ export function AppSidebar() {
             <Leaf className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-foreground">AyurDiet</h2>
-            <p className="text-sm text-muted-foreground">AI Management</p>
+            <h2 className="brand-text text-heading-md">AyurDiet</h2>
+            <p className="card-subtitle">AI Management</p>
           </div>
         </div>
       </SidebarHeader>
 
       <SidebarContent className="p-4">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          <SidebarGroupLabel className="nav-section mb-3">
             Main Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -92,10 +92,12 @@ export function AppSidebar() {
                     <NavLink
                       to={item.url}
                       end={item.url === "/"}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-smooth ${getNavClass(item.url)}`}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-smooth ${getNavClass(
+                        item.url
+                      )}`}
                     >
                       <item.icon className="w-5 h-5" />
-                      <span className="font-medium">{item.title}</span>
+                      <span className="nav-item">{item.title}</span>
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -107,10 +109,11 @@ export function AppSidebar() {
         <div className="mt-8 p-4 bg-subtle-gradient rounded-lg border border-border">
           <div className="flex items-center gap-2 mb-2">
             <Stethoscope className="w-5 h-5 text-primary" />
-            <span className="text-sm font-semibold text-foreground">Healthcare Mode</span>
+            <span className="form-label">Healthcare Mode</span>
           </div>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Professional Ayurvedic diet management with AI-powered insights and traditional wisdom.
+          <p className="form-description">
+            Professional Ayurvedic diet management with AI-powered insights and
+            traditional wisdom.
           </p>
         </div>
       </SidebarContent>
