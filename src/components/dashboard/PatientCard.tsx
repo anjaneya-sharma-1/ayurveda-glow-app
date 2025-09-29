@@ -50,39 +50,57 @@ export function PatientCard({
       onClick={onClick}
     >
       <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
-              <h3 className="patient-name group-hover:text-primary transition-smooth">
-                {name}
-              </h3>
-              <Badge className={`text-xs ${statusColors[status]}`}>
-                {statusLabels[status]}
-              </Badge>
-            </div>
-            <div className="space-y-1 healthcare-text">
-              <div className="flex items-center gap-2">
-                <span>
-                  {age} years, {gender}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="form-label text-primary">
-                  प्रकृति (Prakriti):
-                </span>
-                <span className="ayurvedic-term">{prakriti}</span>
-              </div>
-              {location && (
-                <div className="flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  <span>{location}</span>
-                </div>
-              )}
+        {/* Header with name and status */}
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-smooth">
+              {name}
+            </h3>
+            <div className="text-sm text-muted-foreground mt-1">
+              {age} years, {gender}
             </div>
           </div>
+          <Badge className={`${statusColors[status]} whitespace-nowrap`}>
+            {statusLabels[status]}
+          </Badge>
+        </div>
 
-          <div className="flex flex-col items-center gap-2">
-            <DoshaWheel
+        {/* Main content area */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="font-medium text-primary">Prakriti:</span>
+              <span className="text-sm text-foreground">{prakriti}</span>
+            </div>
+            {location && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <MapPin className="w-4 h-4" />
+                <span>{location}</span>
+              </div>
+            )}
+            {/* Dosha percentages inline */}
+            <div className="flex gap-4">
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 rounded-full" style={{backgroundColor: 'hsl(var(--vata-color))'}}></div>
+                <span className="text-sm font-medium" style={{color: 'hsl(var(--vata-color))'}}>V</span>
+                <span className="text-sm text-muted-foreground">{doshaBalance.vata}%</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 rounded-full" style={{backgroundColor: 'hsl(var(--pitta-color))'}}></div>
+                <span className="text-sm font-medium" style={{color: 'hsl(var(--pitta-color))'}}>P</span>
+                <span className="text-sm text-muted-foreground">{doshaBalance.pitta}%</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 rounded-full" style={{backgroundColor: 'hsl(var(--kapha-color))'}}></div>
+                <span className="text-sm font-medium" style={{color: 'hsl(var(--kapha-color))'}}>K</span>
+                <span className="text-sm text-muted-foreground">{doshaBalance.kapha}%</span>
+              </div>
+            </div>
+          </div>
+          
+          {/* Dosha wheel on the right */}
+          <div className="flex-shrink-0">
+            <DoshaWheel 
               vata={doshaBalance.vata}
               pitta={doshaBalance.pitta}
               kapha={doshaBalance.kapha}
@@ -90,13 +108,14 @@ export function PatientCard({
             />
           </div>
         </div>
-
+        
+        {/* Footer with last visit and action */}
         <div className="flex items-center justify-between pt-4 border-t border-border">
           <div className="flex items-center gap-2 form-description">
             <Calendar className="w-4 h-4" />
             <span>Last visit: {lastConsultation}</span>
           </div>
-          <div className="flex items-center gap-1 link-text">
+          <div className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors">
             <Activity className="w-4 h-4" />
             <span>View Details</span>
           </div>

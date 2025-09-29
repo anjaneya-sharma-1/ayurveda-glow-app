@@ -4,12 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PatientCard } from "@/components/dashboard/PatientCard";
-import { patientsData } from "@/data/patientsData";
+import { AddPatientDialog } from "@/components/patients/AddPatientDialog";
+import { patientsData, type Patient } from "@/data/patientsData";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [patients] = useState(patientsData);
+  const [patients, setPatients] = useState<Patient[]>(patientsData);
 
   const activePatients = patients.filter((p) => p.status === "active").length;
   const attentionPatients = patients.filter(
@@ -35,6 +36,10 @@ export default function Dashboard() {
     navigate(`/patient/${patientId}`);
   };
 
+  const handleAddPatient = (newPatient: Patient) => {
+    setPatients(prevPatients => [newPatient, ...prevPatients]);
+  };
+
   return (
     <div className="p-6 space-y-6 bg-subtle-gradient min-h-screen">
       {/* Header */}
@@ -45,10 +50,12 @@ export default function Dashboard() {
             AI-Powered Ayurvedic Diet Management Overview
           </p>
         </div>
-        <Button className="bg-healing text-white hover:bg-primary-dark shadow-primary button-text">
-          <Plus className="w-4 h-4 mr-2" />
-          Add New Patient
-        </Button>
+        <AddPatientDialog onAddPatient={handleAddPatient}>
+          <Button className="bg-healing text-white hover:bg-primary-dark shadow-primary">
+            <Plus className="w-4 h-4 mr-2" />
+            Add New Patient
+          </Button>
+        </AddPatientDialog>
       </div>
 
       {/* Statistics Cards */}
