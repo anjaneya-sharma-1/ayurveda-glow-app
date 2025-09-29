@@ -174,128 +174,6 @@
 }
 
 @layer components {
-  /* Typography Classes */
-  .section-header {
-    font-family: "Playfair Display", Georgia, serif;
-    font-size: 2.875rem;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    font-weight: 700;
-    color: hsl(var(--foreground));
-  }
-
-  .card-subtitle {
-    font-family: Inter, system-ui, sans-serif;
-    font-size: 1rem;
-    line-height: 1.6;
-    font-weight: 400;
-    color: hsl(var(--muted-foreground));
-  }
-
-  .metric-label {
-    font-family: Inter, system-ui, sans-serif;
-    font-size: 0.875rem;
-    line-height: 1.4;
-    font-weight: 500;
-    color: hsl(var(--muted-foreground));
-    letter-spacing: 0.025em;
-  }
-
-  .metric-value {
-    font-family: Inter, system-ui, sans-serif;
-    font-size: 2rem;
-    line-height: 1;
-    font-weight: 700;
-    color: hsl(var(--foreground));
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* Priority-based metric value sizes */
-  .metric-value-critical {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: hsl(var(--destructive));
-  }
-
-  .metric-value-high {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: hsl(var(--warning));
-  }
-
-  .metric-value-medium {
-    font-size: 2rem;
-    font-weight: 700;
-    color: hsl(var(--primary));
-  }
-
-  .metric-value-low {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: hsl(var(--foreground));
-  }
-
-  .form-description {
-    font-family: Inter, system-ui, sans-serif;
-    font-size: 0.75rem;
-    line-height: 1.5;
-    font-weight: 400;
-    color: hsl(var(--muted-foreground));
-  }
-
-  .success-text {
-    color: hsl(var(--success));
-    font-weight: 500;
-  }
-
-  .warning-text {
-    color: hsl(var(--warning));
-    font-weight: 500;
-  }
-
-  .error-text {
-    color: hsl(var(--destructive));
-    font-weight: 500;
-  }
-
-  /* Card priority classes for different importance levels */
-  .metric-card-critical {
-    border: 2px solid hsl(var(--destructive) / 0.2);
-    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--destructive) / 0.05));
-    box-shadow: 0 4px 20px -4px hsl(var(--destructive) / 0.15);
-  }
-
-  .metric-card-high {
-    border: 2px solid hsl(var(--warning) / 0.3);
-    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--warning) / 0.05));
-    box-shadow: 0 4px 20px -4px hsl(var(--warning) / 0.15);
-  }
-
-  .metric-card-medium {
-    border: 1px solid hsl(var(--primary) / 0.2);
-    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--primary) / 0.05));
-    box-shadow: 0 4px 20px -4px hsl(var(--primary) / 0.15);
-  }
-
-  .metric-card-low {
-    border: 1px solid hsl(var(--border));
-    background: hsl(var(--card));
-    box-shadow: var(--shadow-card);
-  }
-
-  /* Healing gradient backgrounds */
-  .bg-healing {
-    background: linear-gradient(135deg, hsl(142 70% 40%), hsl(160 60% 50%));
-  }
-  
-  .bg-primary-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
-  }
-  
-  .bg-subtle-gradient {
-    background: linear-gradient(180deg, hsl(var(--background)), hsl(144 15% 96%));
-  }
-
   /* Dosha color utilities */
   .text-vata {
     color: hsl(var(--vata-color));
@@ -334,50 +212,6 @@
     box-shadow: var(--shadow-floating);
   }
 
-  /* Interactive elements */
-  .hover-lift {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-floating);
-  }
-  
-  .hover-glow:hover {
-    box-shadow: var(--shadow-primary);
-  }
-
-  /* Priority-based hover effects */
-  .metric-card-critical:hover {
-    transform: translateY(-3px);
-    border-color: hsl(var(--destructive) / 0.4);
-    box-shadow: 0 8px 30px -6px hsl(var(--destructive) / 0.25);
-  }
-
-  .metric-card-high:hover {
-    transform: translateY(-3px);
-    border-color: hsl(var(--warning) / 0.5);
-    box-shadow: 0 8px 30px -6px hsl(var(--warning) / 0.25);
-  }
-
-  .metric-card-medium:hover {
-    transform: translateY(-3px);
-    border-color: hsl(var(--primary) / 0.4);
-    box-shadow: 0 8px 30px -6px hsl(var(--primary) / 0.25);
-  }
-
-  .metric-card-low:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-floating);
-  }
-
-  /* Vedic-inspired elements */
-  .vedic-pattern {
-    background-image: radial-gradient(circle at center, transparent 20%, hsl(var(--primary)) 20.5%, hsl(var(--primary)) 21%, transparent 21.5%);
-    background-size: 20px 20px;
-  }
-
   /* Animations */
   @keyframes slide-in-from-right {
     from {
@@ -398,15 +232,6 @@
     50% {
       box-shadow: 0 0 35px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--primary) / 0.3), 0 8px 32px hsl(var(--primary) / 0.25);
       transform: scale(1.05);
-    }
-  }
-
-  @keyframes critical-pulse {
-    0%, 100% {
-      box-shadow: 0 4px 20px -4px hsl(var(--destructive) / 0.15), 0 0 0 0 hsl(var(--destructive) / 0.1);
-    }
-    50% {
-      box-shadow: 0 8px 30px -6px hsl(var(--destructive) / 0.25), 0 0 0 4px hsl(var(--destructive) / 0.1);
     }
   }
 
@@ -444,10 +269,6 @@
 
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
-  }
-
-  .animate-critical-pulse {
-    animation: critical-pulse 3s ease-in-out infinite;
   }
 
   .animate-gentle-bounce {

@@ -4,31 +4,46 @@ import { WeeklyDietPlan, DietItem } from "@/data/priyaSharmaDietPlan";
 const GROQ_API_KEY = "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";
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
-interface PatientProfile {
-  name: string;
+export interface PatientProfile {
+  name?: string;
   age: number;
   gender: string;
-  prakriti: string;
-  doshaBalance: {
+  weight: number;
+  height: number;
+  activityLevel: string;
+  dosha: string;
+  prakriti?: string;
+  bmi?: number;
+  doshaBalance?: {
     vata: number;
     pitta: number;
     kapha: number;
   };
-  height: number;
-  weight: number;
-  bmi: number;
   healthConditions?: string[];
   allergies?: string[];
   preferences?: string[];
 }
 
+interface Message {
+  role: string;
+  content: string;
+}
+
+interface AIFoodItem {
+  foodName: string;
+  quantity?: string;
+  benefits?: string;
+  notes?: string;
+  [key: string]: unknown;
+}
+
 export class GroqAIService {
-  private async callGroqAPI(messages: any[]) {
+  private async callGroqAPI(messages: Message[]) {
     try {
       const response = await fetch(GROQ_API_URL, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${GROQ_API_KEY}`,
+          Authorization: `Bearer ${GROQ_API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -55,7 +70,7 @@ export class GroqAIService {
 
   private createDietPrompt(patient: PatientProfile): string {
     // Get exact food names from our database
-    const availableFoods = foodDatabase.map(food => food.name).join(", ");
+    const availableFoods = foodDatabase.map((food) => food.name).join(", ");
 
     return `Create a 7-day Ayurvedic diet plan for ${patient.name} (${patient.age}yo ${patient.gender}, Prakriti: ${patient.prakriti}, Dosha: V${patient.doshaBalance.vata}% P${patient.doshaBalance.pitta}% K${patient.doshaBalance.kapha}%, BMI: ${patient.bmi}).
 
@@ -131,35 +146,56 @@ Create a varied 7-day plan using different combinations of these foods. Respond 
 }`;
   }
 
-  private convertAIResponseToDietPlan(aiResponse: string, patient: PatientProfile): WeeklyDietPlan {
+  private convertAIResponseToDietPlan(
+    aiResponse: string,
+    patient: PatientProfile
+  ): WeeklyDietPlan {
     try {
       console.log("Raw AI Response:", aiResponse);
-      
+
       // Try to extract JSON from the response
       let jsonResponse = aiResponse.trim();
-      
+
       // If response contains markdown code blocks, extract the JSON
-      const jsonMatch = jsonResponse.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/);
+      const jsonMatch = jsonResponse.match(
+        /```(?:json)?\s*(\{[\s\S]*\})\s*```/
+      );
       if (jsonMatch) {
         jsonResponse = jsonMatch[1];
       }
-      
+
       // If response starts/ends with extra text, try to find the JSON object
-      const startIndex = jsonResponse.indexOf('{');
-      const lastIndex = jsonResponse.lastIndexOf('}');
+      const startIndex = jsonResponse.indexOf("{");
+      const lastIndex = jsonResponse.lastIndexOf("}");
       if (startIndex !== -1 && lastIndex !== -1) {
         jsonResponse = jsonResponse.slice(startIndex, lastIndex + 1);
       }
-      
+
       console.log("Cleaned JSON:", jsonResponse);
-      
+
       const parsedResponse = JSON.parse(jsonResponse);
       const dietPlan: WeeklyDietPlan = {};
 
-      const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-      const mealTimes = ["earlyMorning", "breakfast", "midMorning", "lunch", "evening", "dinner", "bedtime"];
+      const daysOfWeek = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ];
+      const mealTimes = [
+        "earlyMorning",
+        "breakfast",
+        "midMorning",
+        "lunch",
+        "evening",
+        "dinner",
+        "bedtime",
+      ];
 
-      daysOfWeek.forEach(day => {
+      daysOfWeek.forEach((day) => {
         if (parsedResponse[day]) {
           dietPlan[day] = {
             earlyMorning: [],
@@ -168,41 +204,52 @@ Create a varied 7-day plan using different combinations of these foods. Respond 
             lunch: [],
             evening: [],
             dinner: [],
-            bedtime: []
+            bedtime: [],
           };
 
-          mealTimes.forEach(mealTime => {
+          mealTimes.forEach((mealTime) => {
             if (parsedResponse[day][mealTime]) {
-              parsedResponse[day][mealTime].forEach((item: any, index: number) => {
-                // Find matching food in database
-                const food = foodDatabase.find(f => 
-                  f.name.toLowerCase().includes(item.foodName.toLowerCase()) ||
-                  item.foodName.toLowerCase().includes(f.name.toLowerCase())
-                );
+              parsedResponse[day][mealTime].forEach(
+                (item: AIFoodItem, index: number) => {
+                  // Find matching food in database
+                  const food = foodDatabase.find(
+                    (f) =>
+                      f.name
+                        .toLowerCase()
+                        .includes(item.foodName.toLowerCase()) ||
+                      item.foodName.toLowerCase().includes(f.name.toLowerCase())
+                  );
 
-                if (food) {
-                  const dietItem: DietItem = {
-                    id: `ai_${day}_${mealTime}_${index}_${Date.now()}`,
-                    foodId: food.id,
-                    food: food,
-                    quantity: item.quantity || "1 serving",
-                    notes: item.notes || ""
-                  };
-                  dietPlan[day][mealTime as keyof typeof dietPlan[typeof day]].push(dietItem);
-                } else {
-                  // If food not found, create a fallback with a generic food item
-                  console.warn(`Food not found in database: ${item.foodName}`);
-                  const fallbackFood = foodDatabase[0]; // Use first food as fallback
-                  const dietItem: DietItem = {
-                    id: `ai_${day}_${mealTime}_${index}_${Date.now()}`,
-                    foodId: fallbackFood.id,
-                    food: fallbackFood,
-                    quantity: item.quantity || "1 serving",
-                    notes: `${item.foodName} - ${item.notes || ""}`
-                  };
-                  dietPlan[day][mealTime as keyof typeof dietPlan[typeof day]].push(dietItem);
+                  if (food) {
+                    const dietItem: DietItem = {
+                      id: `ai_${day}_${mealTime}_${index}_${Date.now()}`,
+                      foodId: food.id,
+                      food: food,
+                      quantity: item.quantity || "1 serving",
+                      notes: item.notes || "",
+                    };
+                    dietPlan[day][
+                      mealTime as keyof (typeof dietPlan)[typeof day]
+                    ].push(dietItem);
+                  } else {
+                    // If food not found, create a fallback with a generic food item
+                    console.warn(
+                      `Food not found in database: ${item.foodName}`
+                    );
+                    const fallbackFood = foodDatabase[0]; // Use first food as fallback
+                    const dietItem: DietItem = {
+                      id: `ai_${day}_${mealTime}_${index}_${Date.now()}`,
+                      foodId: fallbackFood.id,
+                      food: fallbackFood,
+                      quantity: item.quantity || "1 serving",
+                      notes: `${item.foodName} - ${item.notes || ""}`,
+                    };
+                    dietPlan[day][
+                      mealTime as keyof (typeof dietPlan)[typeof day]
+                    ].push(dietItem);
+                  }
                 }
-              });
+              );
             }
           });
         }
@@ -222,7 +269,15 @@ Create a varied 7-day plan using different combinations of these foods. Respond 
   }
 
   private generateFallbackPlan(): WeeklyDietPlan {
-    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const daysOfWeek = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
     const dietPlan: WeeklyDietPlan = {};
 
     // Basic fallback foods for each meal
@@ -230,13 +285,16 @@ Create a varied 7-day plan using different combinations of these foods. Respond 
       earlyMorning: [{ name: "Warm Water with Lemon", quantity: "1 glass" }],
       breakfast: [{ name: "Oatmeal", quantity: "1 bowl" }],
       midMorning: [{ name: "Green Tea", quantity: "1 cup" }],
-      lunch: [{ name: "Rice", quantity: "1 cup" }, { name: "Dal", quantity: "1 bowl" }],
+      lunch: [
+        { name: "Rice", quantity: "1 cup" },
+        { name: "Dal", quantity: "1 bowl" },
+      ],
       evening: [{ name: "Herbal Tea", quantity: "1 cup" }],
       dinner: [{ name: "Vegetable Soup", quantity: "1 bowl" }],
-      bedtime: [{ name: "Warm Milk with Turmeric", quantity: "1 glass" }]
+      bedtime: [{ name: "Warm Milk with Turmeric", quantity: "1 glass" }],
     };
 
-    daysOfWeek.forEach(day => {
+    daysOfWeek.forEach((day) => {
       dietPlan[day] = {
         earlyMorning: [],
         breakfast: [],
@@ -244,24 +302,28 @@ Create a varied 7-day plan using different combinations of these foods. Respond 
         lunch: [],
         evening: [],
         dinner: [],
-        bedtime: []
+        bedtime: [],
       };
 
       Object.entries(fallbackMeals).forEach(([mealKey, mealItems]) => {
         mealItems.forEach((item, index) => {
-          const food = foodDatabase.find(f => 
-            f.name.toLowerCase().includes(item.name.toLowerCase()) ||
-            item.name.toLowerCase().includes(f.name.toLowerCase())
-          ) || foodDatabase[0]; // Fallback to first food if not found
+          const food =
+            foodDatabase.find(
+              (f) =>
+                f.name.toLowerCase().includes(item.name.toLowerCase()) ||
+                item.name.toLowerCase().includes(f.name.toLowerCase())
+            ) || foodDatabase[0]; // Fallback to first food if not found
 
           const dietItem: DietItem = {
             id: `fallback_${day}_${mealKey}_${index}_${Date.now()}`,
             foodId: food.id,
             food: food,
             quantity: item.quantity,
-            notes: "AI-suggested meal"
+            notes: "AI-suggested meal",
           };
-          dietPlan[day][mealKey as keyof typeof dietPlan[typeof day]].push(dietItem);
+          dietPlan[day][mealKey as keyof (typeof dietPlan)[typeof day]].push(
+            dietItem
+          );
         });
       });
     });
@@ -272,16 +334,17 @@ Create a varied 7-day plan using different combinations of these foods. Respond 
   async generateDietPlan(patient: PatientProfile): Promise<WeeklyDietPlan> {
     try {
       const prompt = this.createDietPrompt(patient);
-      
+
       const messages = [
         {
           role: "system",
-          content: "You are an expert Ayurvedic nutritionist with deep knowledge of traditional Indian medicine and nutrition. You create personalized diet plans based on dosha constitution and health conditions."
+          content:
+            "You are an expert Ayurvedic nutritionist with deep knowledge of traditional Indian medicine and nutrition. You create personalized diet plans based on dosha constitution and health conditions.",
         },
         {
           role: "user",
-          content: prompt
-        }
+          content: prompt,
+        },
       ];
 
       const aiResponse = await this.callGroqAPI(messages);
@@ -310,34 +373,38 @@ Respond with JSON array only:
       const messages = [
         {
           role: "system",
-          content: "You are an Ayurvedic nutritionist. Suggest appropriate foods based on patient constitution."
+          content:
+            "You are an Ayurvedic nutritionist. Suggest appropriate foods based on patient constitution.",
         },
         {
-          role: "user", 
-          content: prompt
-        }
+          role: "user",
+          content: prompt,
+        },
       ];
 
       const aiResponse = await this.callGroqAPI(messages);
       const suggestions = JSON.parse(aiResponse);
-      
-      return suggestions.map((item: any, index: number) => {
-        const food = foodDatabase.find(f => 
-          f.name.toLowerCase().includes(item.foodName.toLowerCase()) ||
-          item.foodName.toLowerCase().includes(f.name.toLowerCase())
-        );
 
-        if (food) {
-          return {
-            id: `suggestion_${Date.now()}_${index}`,
-            foodId: food.id,
-            food: food,
-            quantity: item.quantity || "1 serving",
-            notes: item.notes || ""
-          };
-        }
-        return null;
-      }).filter(Boolean);
+      return suggestions
+        .map((item: AIFoodItem, index: number) => {
+          const food = foodDatabase.find(
+            (f) =>
+              f.name.toLowerCase().includes(item.foodName.toLowerCase()) ||
+              item.foodName.toLowerCase().includes(f.name.toLowerCase())
+          );
+
+          if (food) {
+            return {
+              id: `suggestion_${Date.now()}_${index}`,
+              foodId: food.id,
+              food: food,
+              quantity: item.quantity || "1 serving",
+              notes: item.notes || "",
+            };
+          }
+          return null;
+        })
+        .filter(Boolean);
     } catch (error) {
       console.error("AI meal suggestions failed:", error);
       return [];

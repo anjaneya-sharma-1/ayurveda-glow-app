@@ -37,7 +37,7 @@ export default function Dashboard() {
   };
 
   const handleAddPatient = (newPatient: Patient) => {
-    setPatients(prevPatients => [newPatient, ...prevPatients]);
+    setPatients((prevPatients) => [newPatient, ...prevPatients]);
   };
 
   return (
@@ -60,53 +60,69 @@ export default function Dashboard() {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-card border-border shadow-card hover-lift">
+        {/* Total Patients - Medium Priority */}
+        <Card className="metric-card-medium hover-lift">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="metric-label">Total Patients</CardTitle>
             <Users className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="metric-value">{patients.length}</div>
+            <div className="metric-value metric-value-medium">
+              {patients.length}
+            </div>
             <p className="form-description mt-1">
               <span className="success-text">+2</span> from last month
             </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-border shadow-card hover-lift">
+        {/* Active Cases - High Priority */}
+        <Card className="metric-card-high hover-lift">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="metric-label">Active Cases</CardTitle>
-            <Activity className="h-5 w-5 text-success" />
+            <Activity className="h-5 w-5 text-warning animate-float" />
           </CardHeader>
           <CardContent>
-            <div className="metric-value">{activePatients}</div>
+            <div className="metric-value metric-value-high">
+              {activePatients}
+            </div>
             <p className="form-description mt-1">Currently under treatment</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-border shadow-card hover-lift">
+        {/* Need Attention - Critical Priority */}
+        <Card className="metric-card-critical hover-lift">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="metric-label">Need Attention</CardTitle>
-            <AlertTriangle className="h-5 w-5 text-warning" />
+            <AlertTriangle className="h-5 w-5 text-destructive animate-gentle-bounce" />
           </CardHeader>
           <CardContent>
-            <div className="metric-value">{attentionPatients}</div>
-            <p className="form-description mt-1">Require immediate care</p>
+            <div className="metric-value metric-value-critical">
+              {attentionPatients}
+            </div>
+            <p className="form-description mt-1">
+              {attentionPatients > 0 ? (
+                <span className="error-text font-medium">
+                  Require immediate care
+                </span>
+              ) : (
+                <span className="success-text">All patients stable</span>
+              )}
+            </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-border shadow-card hover-lift">
+        {/* Consultations - Low Priority */}
+        <Card className="metric-card-low hover-lift">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Consultations
-            </CardTitle>
+            <CardTitle className="metric-label">Consultations</CardTitle>
             <TrendingUp className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">
+            <div className="metric-value metric-value-low">
               {totalConsultations}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">This month</p>
+            <p className="form-description mt-1">This month</p>
           </CardContent>
         </Card>
       </div>

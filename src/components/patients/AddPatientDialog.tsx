@@ -1,10 +1,22 @@
 import { useState } from "react";
 import { Plus, X, User, Calendar, Ruler, Weight, Activity } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,7 +28,10 @@ interface AddPatientDialogProps {
   children: React.ReactNode;
 }
 
-export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogProps) {
+export function AddPatientDialog({
+  onAddPatient,
+  children,
+}: AddPatientDialogProps) {
   const [open, setOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -29,7 +44,7 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
     location: "",
     address: "",
     emergencyContact: "",
-    
+
     // Health Information
     height: "",
     weight: "",
@@ -38,14 +53,14 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
     currentMedications: "",
     allergies: "",
     dietaryRestrictions: "",
-    
+
     // Dosha Balance
     vata: [35],
     pitta: [35],
     kapha: [30],
-    
+
     // Status
-    status: "active" as const
+    status: "active" as const,
   });
 
   const calculateBMI = (height: number, weight: number): number => {
@@ -64,7 +79,7 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
     const height = parseFloat(formData.height);
     const weight = parseFloat(formData.weight);
     const bmi = calculateBMI(height, weight);
-    
+
     const newPatient: Patient = {
       id: generatePatientId(),
       name: formData.name,
@@ -75,7 +90,7 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
       doshaBalance: {
         vata: formData.vata[0],
         pitta: formData.pitta[0],
-        kapha: formData.kapha[0]
+        kapha: formData.kapha[0],
       },
       status: formData.status,
       location: formData.location,
@@ -85,21 +100,23 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
       weight,
       bmi,
       medicalHistory: formData.healthHistory ? [formData.healthHistory] : [],
-      currentMedications: formData.currentMedications ? [formData.currentMedications] : [],
+      currentMedications: formData.currentMedications
+        ? [formData.currentMedications]
+        : [],
       allergies: formData.allergies ? [formData.allergies] : [],
       lifestyle: {
         activityLevel: "moderate",
         sleepHours: 7,
         stressLevel: "low",
-        dietType: formData.dietaryRestrictions || "mixed"
+        dietType: formData.dietaryRestrictions || "mixed",
       },
       wearableData: {
         steps: 0,
         heartRate: 72,
         sleepHours: 7,
-        lastSync: new Date().toISOString()
+        lastSync: new Date().toISOString(),
       },
-      riskFlags: []
+      riskFlags: [],
     };
 
     onAddPatient(newPatient);
@@ -128,7 +145,7 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
       vata: [35],
       pitta: [35],
       kapha: [30],
-      status: "active"
+      status: "active",
     });
   };
 
@@ -143,9 +160,17 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
   const isStepValid = (step: number): boolean => {
     switch (step) {
       case 1:
-        return formData.name.trim() !== "" && formData.age !== "" && formData.gender !== "";
+        return (
+          formData.name.trim() !== "" &&
+          formData.age !== "" &&
+          formData.gender !== ""
+        );
       case 2:
-        return formData.height !== "" && formData.weight !== "" && formData.prakriti !== "";
+        return (
+          formData.height !== "" &&
+          formData.weight !== "" &&
+          formData.prakriti !== ""
+        );
       case 3:
         return true; // Dosha balance is optional with defaults
       case 4:
@@ -159,14 +184,12 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
     { number: 1, title: "Basic Information", icon: User },
     { number: 2, title: "Health Metrics", icon: Activity },
     { number: 3, title: "Dosha Balance", icon: Ruler },
-    { number: 4, title: "Additional Details", icon: Calendar }
+    { number: 4, title: "Additional Details", icon: Calendar },
   ];
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-foreground">
@@ -191,17 +214,23 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                 <step.icon className="w-5 h-5" />
               </div>
               <div className="ml-3 hidden sm:block">
-                <p className={`text-sm font-medium ${
-                  currentStep >= step.number ? "text-primary" : "text-muted-foreground"
-                }`}>
+                <p
+                  className={`text-sm font-medium ${
+                    currentStep >= step.number
+                      ? "text-primary"
+                      : "text-muted-foreground"
+                  }`}
+                >
                   Step {step.number}
                 </p>
                 <p className="text-xs text-muted-foreground">{step.title}</p>
               </div>
               {index < steps.length - 1 && (
-                <div className={`h-0.5 w-12 mx-4 ${
-                  currentStep > step.number ? "bg-primary" : "bg-muted"
-                }`} />
+                <div
+                  className={`h-0.5 w-12 mx-4 ${
+                    currentStep > step.number ? "bg-primary" : "bg-muted"
+                  }`}
+                />
               )}
             </div>
           ))}
@@ -225,7 +254,9 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                     <Input
                       id="name"
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                       placeholder="Enter patient's full name"
                     />
                   </div>
@@ -235,13 +266,20 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                       id="age"
                       type="number"
                       value={formData.age}
-                      onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, age: e.target.value })
+                      }
                       placeholder="Enter age"
                     />
                   </div>
                   <div>
                     <Label htmlFor="gender">Gender *</Label>
-                    <Select value={formData.gender} onValueChange={(value) => setFormData({ ...formData, gender: value })}>
+                    <Select
+                      value={formData.gender}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, gender: value })
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select gender" />
                       </SelectTrigger>
@@ -257,7 +295,9 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                     <Input
                       id="phone"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
                       placeholder="Enter phone number"
                     />
                   </div>
@@ -267,7 +307,9 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                       id="email"
                       type="email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                       placeholder="Enter email address"
                     />
                   </div>
@@ -276,7 +318,9 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                     <Input
                       id="location"
                       value={formData.location}
-                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, location: e.target.value })
+                      }
                       placeholder="City, State"
                     />
                   </div>
@@ -286,7 +330,9 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                   <Textarea
                     id="address"
                     value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, address: e.target.value })
+                    }
                     placeholder="Enter complete address"
                     rows={2}
                   />
@@ -296,7 +342,12 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                   <Input
                     id="emergencyContact"
                     value={formData.emergencyContact}
-                    onChange={(e) => setFormData({ ...formData, emergencyContact: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        emergencyContact: e.target.value,
+                      })
+                    }
                     placeholder="Emergency contact name and phone"
                   />
                 </div>
@@ -321,7 +372,9 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                       id="height"
                       type="number"
                       value={formData.height}
-                      onChange={(e) => setFormData({ ...formData, height: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, height: e.target.value })
+                      }
                       placeholder="Enter height in cm"
                     />
                   </div>
@@ -331,7 +384,9 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                       id="weight"
                       type="number"
                       value={formData.weight}
-                      onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, weight: e.target.value })
+                      }
                       placeholder="Enter weight in kg"
                     />
                   </div>
@@ -339,14 +394,22 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                     <Label>BMI</Label>
                     <div className="p-2 bg-muted rounded text-center font-medium">
                       {formData.height && formData.weight
-                        ? calculateBMI(parseFloat(formData.height), parseFloat(formData.weight))
+                        ? calculateBMI(
+                            parseFloat(formData.height),
+                            parseFloat(formData.weight)
+                          )
                         : "—"}
                     </div>
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="prakriti">Prakriti (Constitution) *</Label>
-                  <Select value={formData.prakriti} onValueChange={(value) => setFormData({ ...formData, prakriti: value })}>
+                  <Select
+                    value={formData.prakriti}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, prakriti: value })
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select patient's constitution" />
                     </SelectTrigger>
@@ -366,17 +429,29 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                   <Textarea
                     id="healthHistory"
                     value={formData.healthHistory}
-                    onChange={(e) => setFormData({ ...formData, healthHistory: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        healthHistory: e.target.value,
+                      })
+                    }
                     placeholder="Previous health conditions, surgeries, family history..."
                     rows={3}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="currentMedications">Current Medications</Label>
+                  <Label htmlFor="currentMedications">
+                    Current Medications
+                  </Label>
                   <Textarea
                     id="currentMedications"
                     value={formData.currentMedications}
-                    onChange={(e) => setFormData({ ...formData, currentMedications: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        currentMedications: e.target.value,
+                      })
+                    }
                     placeholder="List current medications, supplements, herbs..."
                     rows={2}
                   />
@@ -394,7 +469,8 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                   Dosha Balance Assessment
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  Adjust the sliders to reflect the patient's current dosha balance
+                  Adjust the sliders to reflect the patient's current dosha
+                  balance
                 </p>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -402,13 +478,18 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <Label className="text-vata font-medium">Vata</Label>
-                      <Badge variant="outline" className="text-vata border-vata">
+                      <Badge
+                        variant="outline"
+                        className="text-vata border-vata"
+                      >
                         {formData.vata[0]}%
                       </Badge>
                     </div>
                     <Slider
                       value={formData.vata}
-                      onValueChange={(value) => setFormData({ ...formData, vata: value })}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, vata: value })
+                      }
                       max={100}
                       step={5}
                       className="w-full"
@@ -417,17 +498,22 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                       Air & Space - Movement, Creativity, Nervous System
                     </p>
                   </div>
-                  
+
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <Label className="text-pitta font-medium">Pitta</Label>
-                      <Badge variant="outline" className="text-pitta border-pitta">
+                      <Badge
+                        variant="outline"
+                        className="text-pitta border-pitta"
+                      >
                         {formData.pitta[0]}%
                       </Badge>
                     </div>
                     <Slider
                       value={formData.pitta}
-                      onValueChange={(value) => setFormData({ ...formData, pitta: value })}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, pitta: value })
+                      }
                       max={100}
                       step={5}
                       className="w-full"
@@ -436,17 +522,22 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                       Fire & Water - Transformation, Metabolism, Digestion
                     </p>
                   </div>
-                  
+
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <Label className="text-kapha font-medium">Kapha</Label>
-                      <Badge variant="outline" className="text-kapha border-kapha">
+                      <Badge
+                        variant="outline"
+                        className="text-kapha border-kapha"
+                      >
                         {formData.kapha[0]}%
                       </Badge>
                     </div>
                     <Slider
                       value={formData.kapha}
-                      onValueChange={(value) => setFormData({ ...formData, kapha: value })}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, kapha: value })
+                      }
                       max={100}
                       step={5}
                       className="w-full"
@@ -456,11 +547,15 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="p-4 bg-muted rounded-lg">
-                  <p className="text-sm font-medium mb-2">Total: {formData.vata[0] + formData.pitta[0] + formData.kapha[0]}%</p>
+                  <p className="text-sm font-medium mb-2">
+                    Total:{" "}
+                    {formData.vata[0] + formData.pitta[0] + formData.kapha[0]}%
+                  </p>
                   <p className="text-xs text-muted-foreground">
-                    Note: Total should ideally be 100%. Adjust sliders accordingly.
+                    Note: Total should ideally be 100%. Adjust sliders
+                    accordingly.
                   </p>
                 </div>
               </CardContent>
@@ -482,24 +577,38 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                   <Textarea
                     id="allergies"
                     value={formData.allergies}
-                    onChange={(e) => setFormData({ ...formData, allergies: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, allergies: e.target.value })
+                    }
                     placeholder="Food allergies, environmental allergies, drug allergies..."
                     rows={2}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="dietaryRestrictions">Dietary Restrictions</Label>
+                  <Label htmlFor="dietaryRestrictions">
+                    Dietary Restrictions
+                  </Label>
                   <Textarea
                     id="dietaryRestrictions"
                     value={formData.dietaryRestrictions}
-                    onChange={(e) => setFormData({ ...formData, dietaryRestrictions: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        dietaryRestrictions: e.target.value,
+                      })
+                    }
                     placeholder="Vegetarian, vegan, religious restrictions, food preferences..."
                     rows={2}
                   />
                 </div>
                 <div>
                   <Label htmlFor="status">Patient Status</Label>
-                  <Select value={formData.status} onValueChange={(value: any) => setFormData({ ...formData, status: value })}>
+                  <Select
+                    value={formData.status}
+                    onValueChange={(value: "active" | "inactive") =>
+                      setFormData({ ...formData, status: value })
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -524,14 +633,14 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
               </Button>
             )}
           </div>
-          
+
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            
+
             {currentStep < 4 ? (
-              <Button 
+              <Button
                 onClick={nextStep}
                 disabled={!isStepValid(currentStep)}
                 className="bg-primary text-white hover:bg-primary-dark"
@@ -539,7 +648,7 @@ export function AddPatientDialog({ onAddPatient, children }: AddPatientDialogPro
                 Next
               </Button>
             ) : (
-              <Button 
+              <Button
                 onClick={handleSubmit}
                 disabled={!isStepValid(currentStep)}
                 className="bg-healing text-white hover:bg-primary-dark"

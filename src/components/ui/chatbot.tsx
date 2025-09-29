@@ -88,7 +88,7 @@ export function Chatbot({ className }: ChatbotProps) {
         );
       }, 500);
     }
-  }, [isOpen]);
+  }, [isOpen, messages.length]);
 
   const addBotMessage = (content: string, suggestions?: string[]) => {
     const newMessage: Message = {

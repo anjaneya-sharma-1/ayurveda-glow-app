@@ -1,0 +1,558 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* AI-Powered Ayurvedic Diet Management System Design System
+   Vibrant green theme with healing, natural aesthetics
+   All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Base colors */
+    --background: 120 25% 98%;
+    --foreground: 158 30% 15%;
+
+    /* Card system */
+    --card: 0 0% 100%;
+    --card-foreground: 158 30% 15%;
+
+    /* Popover system */
+    --popover: 0 0% 100%;
+    --popover-foreground: 158 30% 15%;
+
+    /* Primary green healing theme */
+    --primary: 142 70% 40%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 142 60% 50%;
+    --primary-dark: 142 80% 30%;
+
+    /* Secondary complementary colors */
+    --secondary: 145 25% 95%;
+    --secondary-foreground: 158 30% 20%;
+
+    /* Muted tones */
+    --muted: 144 15% 96%;
+    --muted-foreground: 158 20% 45%;
+
+    /* Accent colors */
+    --accent: 160 60% 88%;
+    --accent-foreground: 158 40% 20%;
+
+    /* Ayurvedic Dosha Colors */
+    --vata-color: 160 70% 45%;     /* Green for Vata */
+    --pitta-color: 15 85% 55%;     /* Red-orange for Pitta */
+    --kapha-color: 210 70% 55%;    /* Blue for Kapha */
+
+    /* Status colors */
+    --success: 142 70% 40%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 45 85% 55%;
+    --warning-foreground: 0 0% 100%;
+    
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
+    --border: 144 25% 88%;
+    --input: 144 25% 94%;
+    --ring: 142 70% 40%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
+    --gradient-healing: linear-gradient(135deg, hsl(142 70% 40%), hsl(160 60% 50%));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(144 15% 96%));
+    --gradient-dosha: linear-gradient(135deg, hsl(var(--vata-color)), hsl(var(--pitta-color)), hsl(var(--kapha-color)));
+    
+    /* Shadows */
+    --shadow-primary: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    --shadow-card: 0 4px 20px -4px hsl(158 30% 15% / 0.15);
+    --shadow-floating: 0 20px 40px -10px hsl(158 30% 15% / 0.2);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bouncy: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Vedic-inspired patterns and textures */
+    --pattern-mandala: radial-gradient(circle at center, transparent 20%, hsl(var(--primary)) 20.5%, hsl(var(--primary)) 21%, transparent 21.5%);
+    --pattern-lotus: conic-gradient(from 0deg at center, hsl(var(--primary)) 0deg, transparent 60deg, hsl(var(--primary)) 120deg, transparent 180deg, hsl(var(--primary)) 240deg, transparent 300deg);
+    
+    /* Sacred geometry inspired spacing */
+    --golden-ratio: 1.618;
+    --sacred-spacing: calc(1rem * var(--golden-ratio));
+    
+    /* Cultural typography */
+    --font-size-sanskrit: 1.125rem;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: Inter, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  /* Typography Hierarchy */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Playfair Display", Georgia, serif;
+    color: hsl(var(--foreground));
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: 2.875rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: 2.25rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: 2rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+
+  h5 {
+    font-size: 1.5rem;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    font-weight: 500;
+  }
+
+  h6 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Professional text variants */
+  .text-display {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  .text-heading {
+    @apply font-display font-semibold;
+  }
+
+  .text-body {
+    @apply font-body leading-relaxed;
+  }
+
+  .text-caption {
+    @apply text-caption font-medium text-muted-foreground;
+  }
+
+  .text-label {
+    @apply text-body-sm font-medium;
+  }
+
+  /* Enhanced readability for healthcare content */
+  .healthcare-text {
+    @apply font-body text-body-md leading-relaxed tracking-wide;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Medical/Clinical text styling */
+  .clinical-data {
+    @apply font-mono text-body-sm tabular-nums;
+  }
+
+  /* Brand/Logo typography */
+  .brand-text {
+    @apply font-display font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Healing gradient backgrounds */
+  .bg-healing {
+    background: var(--gradient-healing);
+  }
+  
+  .bg-primary-gradient {
+    background: var(--gradient-primary);
+  }
+  
+  .bg-subtle-gradient {
+    background: var(--gradient-subtle);
+  }
+
+  /* Dosha color utilities */
+  .text-vata {
+    color: hsl(var(--vata-color));
+  }
+  
+  .text-pitta {
+    color: hsl(var(--pitta-color));
+  }
+  
+  .text-kapha {
+    color: hsl(var(--kapha-color));
+  }
+  
+  .bg-vata {
+    background-color: hsl(var(--vata-color));
+  }
+  
+  .bg-pitta {
+    background-color: hsl(var(--pitta-color));
+  }
+  
+  .bg-kapha {
+    background-color: hsl(var(--kapha-color));
+  }
+
+  /* Enhanced shadows */
+  .shadow-primary {
+    box-shadow: var(--shadow-primary);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-floating {
+    box-shadow: var(--shadow-floating);
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-bouncy {
+    transition: var(--transition-bouncy);
+  }
+
+  /* Interactive elements */
+  .hover-lift {
+    @apply transition-smooth hover:translate-y-[-2px] hover:shadow-floating;
+  }
+  
+  .hover-glow {
+    @apply transition-smooth hover:shadow-primary;
+  }
+
+  /* Vedic-inspired elements */
+  .vedic-pattern {
+    background-image: var(--pattern-mandala);
+    background-size: 20px 20px;
+  }
+  
+  .lotus-gradient {
+    background: var(--pattern-lotus);
+  }
+  
+  .sacred-spacing {
+    margin: var(--sacred-spacing);
+  }
+  
+  /* Enhanced dosha wheel animations */
+  @keyframes draw-vata {
+    0% {
+      stroke-dasharray: 0 1000;
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes draw-pitta {
+    0% {
+      stroke-dasharray: 0 1000;
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes draw-kapha {
+    0% {
+      stroke-dasharray: 0 1000;
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* Dosha wheel styling */
+  .dosha-wheel {
+    @apply relative rounded-full overflow-visible;
+    filter: drop-shadow(0 4px 12px hsl(var(--primary) / 0.15));
+  }
+  
+  .dosha-segment {
+    @apply absolute inset-0 transition-all duration-700;
+  }
+
+  /* Chatbot animations */
+  @keyframes slide-in-from-right {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(var(--primary) / 0.4), 0 0 40px hsl(var(--primary) / 0.2), 0 8px 32px hsl(var(--primary) / 0.15);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 35px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--primary) / 0.3), 0 8px 32px hsl(var(--primary) / 0.25);
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes gentle-bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-4px);
+    }
+    60% {
+      transform: translateY(-2px);
+    }
+  }
+
+  .animate-in {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+  }
+
+  .slide-in-from-right-5 {
+    animation-name: slide-in-from-right;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-gentle-bounce {
+    animation: gentle-bounce 2s ease-in-out infinite;
+  }
+
+  /* Doctor Avatar animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+  }
+  
+  @keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    75% { transform: rotate(-10deg); }
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-wave {
+    animation: wave 2s ease-in-out infinite;
+  }
+  
+  /* Responsive card layouts */
+  .card-responsive {
+    @apply w-full h-full min-h-[280px] flex flex-col;
+  }
+  
+  /* Cultural elements */
+  .sanskrit-text {
+    @apply font-devanagari font-medium tracking-ayurvedic;
+    font-size: var(--font-size-sanskrit);
+    line-height: 1.8;
+  }
+  
+  .ayurvedic-term {
+    @apply font-devanagari font-medium text-primary italic tracking-wide;
+  }
+  
+  .dosha-label {
+    @apply font-display font-semibold tracking-wide uppercase text-sm;
+  }
+
+  /* Professional healthcare typography */
+  .patient-name {
+    @apply font-display font-semibold text-heading-md text-foreground;
+  }
+  
+  .diagnosis-text {
+    @apply font-body font-medium text-body-md text-foreground;
+  }
+  
+  .metric-value {
+    @apply font-display font-bold text-2xl tabular-nums text-primary;
+  }
+  
+  .metric-label {
+    @apply font-body font-medium text-body-sm text-muted-foreground uppercase tracking-wide;
+  }
+  
+  .card-title {
+    @apply font-display font-semibold text-heading-md text-foreground;
+  }
+  
+  .card-subtitle {
+    @apply font-body font-medium text-body-sm text-muted-foreground;
+  }
+  
+  .section-header {
+    @apply font-display font-bold text-heading-lg text-foreground tracking-tight;
+  }
+  
+  .subsection-header {
+    @apply font-display font-semibold text-heading-md text-foreground;
+  }
+  
+  /* Interactive text elements */
+  .link-text {
+    @apply font-body font-medium text-primary hover:text-primary-dark transition-colors;
+  }
+  
+  .button-text {
+    @apply font-body font-semibold tracking-wide;
+  }
+  
+  /* Status and alert typography */
+  .success-text {
+    @apply font-body font-medium text-success;
+  }
+  
+  .warning-text {
+    @apply font-body font-medium text-warning;
+  }
+  
+  .error-text {
+    @apply font-body font-medium text-destructive;
+  }
+  
+  /* Form typography */
+  .form-label {
+    @apply font-body font-semibold text-body-sm text-foreground;
+  }
+  
+  .form-description {
+    @apply font-body text-body-sm text-muted-foreground leading-relaxed;
+  }
+  
+  .form-error {
+    @apply font-body font-medium text-caption text-destructive;
+  }
+  
+  /* Navigation typography */
+  .nav-item {
+    @apply font-body font-medium text-body-md;
+  }
+  
+  .nav-section {
+    @apply font-body font-semibold text-body-sm text-muted-foreground uppercase tracking-wider;
+  }
+  
+  .healing-card {
+    @apply bg-gradient-to-br from-card via-card to-primary/5 border border-primary/10;
+    box-shadow: 0 4px 20px -4px hsl(var(--primary) / 0.15), 0 0 40px -20px hsl(var(--primary) / 0.1);
+  }
+}
