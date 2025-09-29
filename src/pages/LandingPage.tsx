@@ -26,6 +26,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+// import { Scene3D } from "@/components/Scene3D"; // Uncomment when ready to use 3D model
 
 export default function LandingPage() {
   return (
@@ -67,40 +68,83 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <Badge className="mb-4 bg-green-100 text-green-800 hover:bg-green-200">
-            🔬 Evidence-Based Nutrition + Traditional Wisdom
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-            End-to-End Ayurvedic
-            <span className="text-green-600 block">
-              Diet Management Platform
-            </span>
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-            The world's first cloud platform merging modern nutrition science
-            with Ayurvedic dietary principles. AI-driven personalized diets
-            tracking nutrients while honoring Dosha, Rasa, Guna, Virya, and
-            Prakriti.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link to="/ai-consultant">
-              <Button
-                size="lg"
-                className="bg-green-600 hover:bg-green-700 text-white px-8"
-              >
-                AI Diet Assistant <Sparkles className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link to="/food-database">
-              <Button size="lg" variant="outline" className="px-8">
-                8,000+ Food Database <BookOpen className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+        <div className="max-w-7xl mx-auto">
+          {/* Two-column layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column - Content */}
+            <div className="text-center lg:text-left">
+              <Badge className="mb-4 bg-green-100 text-green-800 hover:bg-green-200">
+                🔬 Evidence-Based Nutrition + Traditional Wisdom
+              </Badge>
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+                End-to-End Ayurvedic
+                <span className="text-green-600 block">
+                  Diet Management Platform
+                </span>
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                The world's first cloud platform merging modern nutrition
+                science with Ayurvedic dietary principles. AI-driven
+                personalized diets tracking nutrients while honoring Dosha,
+                Rasa, Guna, Virya, and Prakriti.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
+                <Link to="/ai-consultant">
+                  <Button
+                    size="lg"
+                    className="bg-green-600 hover:bg-green-700 text-white px-8"
+                  >
+                    AI Diet Assistant <Sparkles className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Link to="/food-database">
+                  <Button size="lg" variant="outline" className="px-8">
+                    8,000+ Food Database <BookOpen className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Column - 3D Human Body */}
+            <div className="relative">
+              <div className="aspect-square w-full max-w-lg mx-auto">
+                {/* 3D Model Container */}
+                <div className="w-full h-full rounded-2xl bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 shadow-2xl overflow-hidden">
+                  {/* Placeholder for 3D model - Replace this div with Scene3D component when ready */}
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center p-8">
+                      <div className="w-32 h-32 mx-auto mb-4 bg-green-200 dark:bg-green-800 rounded-full flex items-center justify-center animate-pulse">
+                        <Users className="w-16 h-16 text-green-600 dark:text-green-400" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-green-800 dark:text-green-200 mb-2">
+                        3D Human Body Model
+                      </h3>
+                      <p className="text-sm text-green-600 dark:text-green-400">
+                        Interactive 3D visualization for holistic health
+                        analysis
+                      </p>
+                    </div>
+                  </div>
+                  {/* Uncomment the line below and remove the placeholder div above when you're ready to use the 3D model */}
+                  {/* <Scene3D /> */}
+                </div>
+
+                {/* Floating elements around the 3D model */}
+                <div className="absolute -top-4 -right-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-lg">
+                  <Heart className="w-6 h-6 text-red-500" />
+                </div>
+                <div className="absolute top-1/2 -left-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-lg">
+                  <Brain className="w-6 h-6 text-purple-500" />
+                </div>
+                <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-full p-3 shadow-lg">
+                  <Leaf className="w-6 h-6 text-green-500" />
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Hero Image/Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+          {/* Stats Row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
             <Card className="border-green-200 dark:border-green-800">
               <CardHeader className="text-center">
                 <Search className="h-12 w-12 text-green-600 mx-auto mb-2" />
