@@ -2,41 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* AI-Powered Ayurvedic Diet Management System Design System
+   Vibrant green theme with healing, natural aesthetics
+   All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base colors */
+    --background: 120 25% 98%;
+    --foreground: 158 30% 15%;
 
+    /* Card system */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 158 30% 15%;
 
+    /* Popover system */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 158 30% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary green healing theme */
+    --primary: 142 70% 40%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 142 60% 50%;
+    --primary-dark: 142 80% 30%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary complementary colors */
+    --secondary: 145 25% 95%;
+    --secondary-foreground: 158 30% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted tones */
+    --muted: 144 15% 96%;
+    --muted-foreground: 158 20% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent colors */
+    --accent: 160 60% 88%;
+    --accent-foreground: 158 40% 20%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Ayurvedic Dosha Colors */
+    --vata-color: 160 70% 45%;     /* Green for Vata */
+    --pitta-color: 15 85% 55%;     /* Red-orange for Pitta */
+    --kapha-color: 210 70% 55%;    /* Blue for Kapha */
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Status colors */
+    --success: 142 70% 40%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 45 85% 55%;
+    --warning-foreground: 0 0% 100%;
+    
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    /* Borders and inputs */
+    --border: 144 25% 88%;
+    --input: 144 25% 94%;
+    --ring: 142 70% 40%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
+    --gradient-healing: linear-gradient(135deg, hsl(142 70% 40%), hsl(160 60% 50%));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(144 15% 96%));
+    --gradient-dosha: linear-gradient(135deg, hsl(var(--vata-color)), hsl(var(--pitta-color)), hsl(var(--kapha-color)));
+    
+    /* Shadows */
+    --shadow-primary: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    --shadow-card: 0 4px 20px -4px hsl(158 30% 15% / 0.15);
+    --shadow-floating: 0 20px 40px -10px hsl(158 30% 15% / 0.2);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bouncy: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +138,86 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer components {
+  /* Healing gradient backgrounds */
+  .bg-healing {
+    background: var(--gradient-healing);
+  }
+  
+  .bg-primary-gradient {
+    background: var(--gradient-primary);
+  }
+  
+  .bg-subtle-gradient {
+    background: var(--gradient-subtle);
+  }
+
+  /* Dosha color utilities */
+  .text-vata {
+    color: hsl(var(--vata-color));
+  }
+  
+  .text-pitta {
+    color: hsl(var(--pitta-color));
+  }
+  
+  .text-kapha {
+    color: hsl(var(--kapha-color));
+  }
+  
+  .bg-vata {
+    background-color: hsl(var(--vata-color));
+  }
+  
+  .bg-pitta {
+    background-color: hsl(var(--pitta-color));
+  }
+  
+  .bg-kapha {
+    background-color: hsl(var(--kapha-color));
+  }
+
+  /* Enhanced shadows */
+  .shadow-primary {
+    box-shadow: var(--shadow-primary);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-floating {
+    box-shadow: var(--shadow-floating);
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-bouncy {
+    transition: var(--transition-bouncy);
+  }
+
+  /* Interactive elements */
+  .hover-lift {
+    @apply transition-smooth hover:translate-y-[-2px] hover:shadow-floating;
+  }
+  
+  .hover-glow {
+    @apply transition-smooth hover:shadow-primary;
+  }
+
+  /* Dosha wheel styling */
+  .dosha-wheel {
+    @apply relative w-24 h-24 rounded-full overflow-hidden shadow-card;
+  }
+  
+  .dosha-segment {
+    @apply absolute inset-0 transition-all duration-500;
   }
 }
