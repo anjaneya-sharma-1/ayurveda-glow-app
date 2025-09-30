@@ -453,7 +453,7 @@ export function Chatbot({ className }: ChatbotProps) {
         <Button
           onClick={toggleChatbot}
           className={`relative w-16 h-16 rounded-full bg-healing hover:scale-110 text-white shadow-floating hover-lift transition-all duration-300 overflow-hidden border-2 border-white/20 z-50 group ${
-            isOpen ? "rotate-180 scale-95" : "animate-pulse-glow"
+            isOpen ? "rotate-180 scale-95" : ""
           }`}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-full"></div>

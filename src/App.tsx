@@ -10,6 +10,10 @@ import PatientProfile from "./pages/PatientProfile";
 import FoodDatabase from "./pages/FoodDatabase";
 import AiConsultant from "./pages/AiConsultant";
 import PopulationInsights from "./pages/PopulationInsights";
+import DoshaAssessment from "./pages/DoshaAssessment";
+import MealPlanning from "./pages/MealPlanning";
+import HerbsRemedies from "./pages/HerbsRemedies";
+import AyurvedicLibrary from "./pages/AyurvedicLibrary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -74,18 +78,12 @@ const App = () => (
             }
           />
 
-          {/* Placeholder routes for new Ayurveda sections */}
+          {/* Ayurvedic Tools Routes */}
           <Route
             path="/dosha-assessment"
             element={
               <AppLayout>
-                <div className="p-8 text-center">
-                  <h1 className="text-3xl font-bold mb-4">Dosha Assessment</h1>
-                  <p>
-                    Coming soon... This will be your personalized dosha
-                    assessment tool.
-                  </p>
-                </div>
+                <DoshaAssessment />
               </AppLayout>
             }
           />
@@ -93,13 +91,7 @@ const App = () => (
             path="/meal-planning"
             element={
               <AppLayout>
-                <div className="p-8 text-center">
-                  <h1 className="text-3xl font-bold mb-4">Meal Planning</h1>
-                  <p>
-                    Coming soon... Personalized meal planning based on your
-                    dosha.
-                  </p>
-                </div>
+                <MealPlanning />
               </AppLayout>
             }
           />
@@ -107,12 +99,7 @@ const App = () => (
             path="/herbs-remedies"
             element={
               <AppLayout>
-                <div className="p-8 text-center">
-                  <h1 className="text-3xl font-bold mb-4">Herbs & Remedies</h1>
-                  <p>
-                    Coming soon... Natural remedies and herbal recommendations.
-                  </p>
-                </div>
+                <HerbsRemedies />
               </AppLayout>
             }
           />
@@ -120,13 +107,7 @@ const App = () => (
             path="/library"
             element={
               <AppLayout>
-                <div className="p-8 text-center">
-                  <h1 className="text-3xl font-bold mb-4">Ayurvedic Library</h1>
-                  <p>
-                    Coming soon... Educational resources and traditional
-                    knowledge.
-                  </p>
-                </div>
+                <AyurvedicLibrary />
               </AppLayout>
             }
           />
